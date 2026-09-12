@@ -8,7 +8,7 @@
 | **Deferred** | AI/RAG views, n8n/automation states (skeleton sections only, wired later) |
 | **Auth model** | httpOnly cookies (no localStorage) — requires small backend changes, listed at the end |
 
----
+--- 
 
 ## 1. Overview
 
