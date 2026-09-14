@@ -1,180 +1,181 @@
-# DocuShield — UI/UX Design Prompt (for design apps)
+# DocuShield — Complete UI/UX Design Prompt
+
+> **IMPORTANT: You must design EVERY screen listed below. Do not skip any
+> section. This is a complete SaaS app with public pages AND a role-based
+> dashboard (three roles). All sections are mandatory. Deliver all of them
+> as a single, complete screen set.**
 
 ---
 
-## Role
+## Your role
 
-Act as a senior product designer and UX engineer. You will design the complete
-UI for a B2B SaaS web app. Deliver polished, pixel-accurate SCREENS and UX
-FLOWS as visual mockups (not code). A development team will later implement
-these designs in their own tech stack, so focus purely on visuals, layout,
-hierarchy, and interactions — never code, never framework names.
+You are a senior product designer. Design the full UI for a B2B SaaS app.
+Deliver polished, pixel-accurate SCREENS as visual mockups — not code. A dev
+team will implement these later, so focus on visuals, layout, hierarchy, and
+interactions only.
 
 ## Product
 
-DocuShield — an AI co-pilot for legal contract risk triage. Legal teams upload
-contracts; the app reads them, extracts key clauses, and flags risky terms so
-lawyers can review faster. Positioning: trusted, precise, enterprise-grade
-security for legal documents. Target users: workspace admins, legal
-professionals, and read-only viewers.
+DocuShield — AI co-pilot for legal contract risk triage. Legal teams upload
+contracts; the app extracts key clauses and flags risky terms. Three user
+types exist:
 
-## Design language
+- **Admin** — workspace owner, full access (contracts + upload + members +
+  billing)
+- **Legal** — team member, contracts + upload only (no members/billing)
+- **Viewer** — read-only, contracts only (no upload, no members, no billing)
 
-### Mood
+The app has two zones: public pages (anyone) and a dashboard (logged-in users
+only, one shared shell with role-gated nav).
 
-- Confident, calm, enterprise-trustworthy. Think premium legal + modern
-  security-tool aesthetic (Linear, Notion, Stripe-grade polish).
-- Clean layouts, generous whitespace, subtle depth (soft shadows), no clutter,
-  no gimmicks. Content is king; the interface recedes.
-- Interactive states feel alive but restrained: subtle hover lift, smooth
-  150–250ms transitions, clear focus states.
+## Design rules
 
-### Color palette (LIGHT MODE ONLY)
+- **LIGHT MODE ONLY.** No dark mode.
+- **No code, no framework names, no component-library names** — pure visual.
+- **One design language** across every screen — same product, same fonts,
+  colors, spacing, icon style.
+- **WCAG AA contrast** on every text/color.
+- **Consistent icons**: line style, 1.5–2px stroke, rounded caps. No mixed
+  filled/outline.
 
-- Primary brand: deep navy/ink blue family — the "legal document" base, used
-  for primary surfaces, the sidebar, headings, and the landing hero.
-  Signature navy ≈ `#0B1424`–`#15243D`, with a full light-to-dark scale for
-  tints and surfaces.
-- Accent: emerald/teal green — the "shield + trust + success" color. Used for
-  the main CTA, the active navigation state, and success indicators.
-- Semantic states: green = success, amber = warning/pending attention, red =
-  failure/error, blue/sky = in-progress, violet = special/high-privilege
-  (admins).
-- Neutrals: near-white page background (`#F7F8FA`), white surfaces, soft slate
-  borders, slate body text, navy headings.
-- Provide a full color system: primary scale, accent scale, semantic, and
-  neutral — each named and consistent.
+## Design tokens (apply to every screen)
 
-### Typography
+**Colors:**
+- Brand: deep navy `#0B1424`–`#15243D` (sidebar, headings, landing hero).
+- Accent: emerald/teal green (main CTA, active nav, success).
+- Semantic: green = success, amber = warning, red = error, blue = in-progress,
+  violet = admin/special.
+- Neutrals: page background `#F7F8FA`, white surfaces, slate borders,
+  slate body text, navy headings.
 
-- Modern geometric sans-serif (Inter / Geist style).
-- Clear scale: a large display size for the hero, distinct H1/H2/H3, a
-  comfortable body size (15–16px), and tiny uppercase labels for section
-  headers.
-- Tight letter-spacing on headings; tabular numbers for file sizes and dates.
-- Strong hierarchy: users must know what to read first on every screen.
+**Typography:** Jakarta Sans (primary), clear H1–H3 hierarchy, 15–16px body,
+tiny uppercase section labels, tabular numbers for data.
 
-### Shape & detail
+**Shape:** 8px radius cards/inputs, 12px radius modals, full-pill badges,
+1px borders, soft shadows.
 
-- Rounded corners: 8px for cards and inputs, 12px for modals and large
-  surfaces, full-pill for badges and tags.
-- 1px borders; soft, low-opacity shadows. Hover slightly darkens the border —
-  never a hard jump.
+---
 
-## Brand & iconography
+# SECTION A — PUBLIC PAGES (anyone can see)
 
-- A simple, bold shield-and-document logo mark that reads well at 16px
-  (favicon) and at 120px (landing). Keep the accent color for the shield
-  detail.
-- Line-style icons (1.5–2px stroke, rounded caps), a single consistent weight
-  and corner radius across all screens. No mixed filled/outline styles.
+Design ALL of the following:
 
-## Screens to design (LIGHT MODE ONLY)
+| # | Screen | Key elements |
+|---|--------|-------------|
+| A1 | **Landing page** | Sticky navbar (logo, nav links, Login ghost + "Get started" primary CTA). Hero on deep navy with subtle glow, one-line value prop, primary CTA **"Analyze a contract"**, secondary "How it works". Three feature cards (Upload & parse / AI risk triage / Team collaboration). 3-step process strip. Footer. |
+| A2 | **Landing (logged-in state)** | Same navbar but with **Dashboard** button instead of Login/Register. |
+| A3 | **Login** | Centered card, soft background. Email + password, submit, "Continue with Google" (official G icon), link to Register. Show default state + inline validation errors + submitting spinner. |
+| A4 | **Register — Create workspace** | Tab-based. Workspace name + email + password. Google sign-in. Inline errors. |
+| A5 | **Register — Join workspace** | Same page, second tab. Invite code + email + password. Google sign-in. |
+| A6 | **OAuth callback** | Spinner + "Signing you in…" + failure state with "Try again". |
+| A7 | **404** | Logo, "Page not found", back-home button. |
 
-### Public (logged-out)
+---
 
-1. **Landing page** — sticky navbar (logo, nav links, Login + "Get started");
-   a hero on deep navy with a subtle glow/grid texture, a one-line value prop,
-   primary CTA "Analyze a contract" and secondary "How it works"; three
-   feature cards (Upload & parse, AI risk triage, Team collaboration); a
-   3-step process strip; footer. Also show the same navbar in the logged-in
-   state with a Dashboard button.
-2. **Login** — centered card on a soft background: email + password, sign-in
-   button, "Continue with Google" button (official two-tone G), link to
-   register. Show the default state, inline validation errors, and the
-   submitting state (spinner).
-3. **Register** — one screen, TWO modes via tabs:
-   - **Create workspace**: workspace/company name + email + password.
-   - **Join workspace**: invite code + email + password.
-   Both include Google sign-in. Show inline field errors and a basic password
-   strength hint.
-4. **OAuth callback** — quiet transition screen: centered spinner +
-   "Signing you in…", plus its failure state (error + "Try again").
-5. **404** — on-brand, logo, "Page not found", Back home.
+# SECTION B — DASHBOARD SHELL (same for all roles)
 
-### Dashboard (one authenticated shell, role-aware)
+This is the shared authenticated layout. Design:
 
-Shared shell: left sidebar (logo; nav: Contracts, Upload, Members, Billing;
-user block at the bottom with avatar, name, email, role tag, Logout) + top
-bar (page title, user menu). On mobile the sidebar becomes a hamburger
-drawer.
+| # | Screen | Key elements |
+|---|--------|-------------|
+| B1 | **Sidebar (desktop)** | Logo; nav links: Contracts, Upload, Members, Billing; bottom block: user avatar, name, email, role tag, Logout. |
+| B2 | **Sidebar (mobile)** | Hamburger icon opens drawer sidebar. |
+| B3 | **Top bar** | Page title, breadcrumb, user menu dropdown (profile, logout). |
 
-1. **Dashboard overview** — "Welcome back, <name>", a row of metric cards
-   (Total contracts, In review, Ready — plus Members and Current plan for
-   admins), and below it the contract list. Include an empty state variant
-   with an inviting CTA.
-2. **Contract list** — table: file name, uploader, status tag, uploaded date,
-   size, row actions (view). Hover states, status tags colored per the map
-   below. On mobile it collapses to stacked cards.
-3. **Upload** — drag-and-drop zone (dashed border that lights up on
-   drag-over; accepts PDF/DOCX), a selected-file card (name, size, remove),
-   an inline legal note, and a submit button with a loading state.
-4. **Contract detail** — header metadata (name, uploader, date, status tag),
-   a 5-step status stepper (queued → extracting → embedding → classifying →
-   ready; failed shown as a red terminal step with retry), then placeholder
-   sections for future AI output ("Risk flags", "Key clauses", "Ask the
-   contract") styled as elegant "coming soon" cards.
-5. **Members** (admin only) — member table (avatar, name, email, role tag
-   with an inline change-role menu, joined date) + an "Invite member" button
-   that opens a modal → generates a code → a large copyable code box with a
-   Copy button and success toast.
-6. **Billing** (admin only) — current plan card (name, price, status),
-   upgrade options ("Upgrade to Pro", "Go Enterprise") that open Stripe
-   checkout in a new tab, and a note about invoices.
+---
 
-## Role-based behavior (show all three variants)
+# SECTION C — ADMIN DASHBOARD (full access)
 
-- **Admin**: full nav (Contracts, Upload, Members, Billing); upload
-  everywhere visible.
-- **Legal**: Contracts + Upload only; Members/Billing nav hidden; upload
-  visible.
-- **Viewer**: read-only — NO upload button anywhere (hidden entirely, not
-  greyed), no Members/Billing; everything else visible.
+Admin sees ALL nav items. Design each screen with the Admin user's full nav:
 
-Mark each screen or nav bar with the role it belongs to (Admin / Legal /
-Viewer / All).
+| # | Screen | Key elements |
+|---|--------|-------------|
+| C1 | **Dashboard overview** | "Welcome back, <name>". Metric cards: Total contracts, In review, Ready, Members count, Current plan. Contract list below. Include empty state variant ("Upload your first contract"). |
+| C2 | **Contract list** | Table: file name, uploader, status tag, uploaded date, size, view action. Hover states. "Upload contract" button in header. Mobile: stacked cards. |
+| C3 | **Upload** | Drag-drop zone (dashed border, lights up on drag), file card (name, size, remove), legal note, submit button (loading state). |
+| C4 | **Contract detail** | Header: name, uploader, date, status tag. 5-step stepper (queued → extracting → embedding → classifying → ready; failed = red + retry). Placeholder AI cards: Risk flags, Key clauses, Ask the contract. |
+| C5 | **Members** | Member table (avatar, name, email, role tag + change-role dropdown, joined date). "Invite member" button → modal → generated code → copyable box + Copy button + success toast. |
+| C6 | **Billing** | Current plan card (name, price, status). Upgrade options ("Upgrade to Pro", "Go Enterprise"). Invoice note. |
 
-## Status & role tags (fixed vocabulary — invent nothing)
+---
 
-Contract status → tag style:
+# SECTION D — LEGAL DASHBOARD (limited access)
 
-- queued → neutral slate, subtle clock icon
-- extracting → blue, pulsing progress icon
-- embedding → violet, pulsing progress icon
-- classifying → amber, pulsing progress icon
-- ready → green, check icon
-- failed → red, alert icon
+Legal user has a SMALLER sidebar: **Contracts + Upload only**. No Members,
+no Billing in nav. Design each screen with Legal's reduced nav:
 
-Role tag style:
+| # | Screen | What differs from Admin |
+|---|--------|------------------------|
+| D1 | **Dashboard overview** | No Members/plan metric cards. Contracts + upload only. |
+| D2 | **Contract list** | Same as Admin C2. Upload button visible. |
+| D3 | **Upload** | Same as Admin C3. |
+| D4 | **Contract detail** | Same as Admin C4. |
 
-- admin → violet, legal → amber, viewer → slate
+---
 
-## User flows to sequence (arrows between screens)
+# SECTION E — VIEWER DASHBOARD (read-only)
 
-1. Landing → Login → Dashboard (and Landing → Register → Create → Dashboard).
-2. Register (Join workspace via invite code) → Dashboard as invited role.
-3. Login → Dashboard → Upload → Contract detail (with status transitioning).
-4. Admin: Dashboard → Members → Invite → copy code → success toast.
-5. Admin: Dashboard → Billing → Choose plan → Stripe (new tab) → back.
-6. Any page → 404; logged-out → Login when opening a protected screen.
+Viewer sees **Contracts only** in sidebar. No upload button anywhere, no
+Members, no Billing. Design:
 
-## Deliverables
+| # | Screen | What differs from Admin |
+|---|--------|------------------------|
+| E1 | **Dashboard overview** | Contracts-only metrics. No upload button. |
+| E2 | **Contract list** | Same table but **no upload button**, no view action (read-only rows). |
+| E3 | **Contract detail** | Metadata + stepper visible, no action buttons. |
 
-1. A STYLEGUIDE frame: color palette (all scales), typography scale, buttons
-   (all variants + states), inputs (default / focus / error / disabled),
-   tags, tables, modals, toasts, dropdowns.
-2. The complete screen set at 1440px desktop, plus key screens at mobile
-   (390px): landing, login, register, dashboard overview, contract list,
-   contract detail, upload, and the mobile sidebar-drawer state.
-3. The user flows as connected frames with arrows (per the list above).
-4. A short design rationale note per core screen (why the layout/hierarchy
-   was chosen).
+---
 
-## Style rules
+# STATUS & ROLE TAGS (same across every screen)
 
-- No code, no framework/language names, no component-library names — pure
-  visual design.
-- No invented statuses or roles beyond those listed.
-- One consistent, minimal design language across every screen — it must feel
-  like the same product, not a collection of pages.
-- Contrast: text on every color passes WCAG AA.
+Contract status tags:
+
+| Status | Color | Icon |
+|--------|-------|------|
+| queued | slate | clock |
+| extracting | blue | pulsing progress |
+| embedding | violet | pulsing progress |
+| classifying | amber | pulsing progress |
+| ready | green | check |
+| failed | red | alert |
+
+Role tags:
+
+| Role | Color |
+|------|-------|
+| admin | violet |
+| legal | amber |
+| viewer | slate |
+
+---
+
+# USER FLOWS (sequence with arrows between screens)
+
+1. Landing → Login → Admin Dashboard
+2. Landing → Register (Create) → Admin Dashboard
+3. Landing → Register (Join via code) → Viewer/Legal Dashboard (depending on invite role)
+4. Login → Dashboard → Upload → Contract detail (status transitions)
+5. Admin: Dashboard → Members → Invite → copy code → toast
+6. Admin: Dashboard → Billing → Stripe (new tab) → back
+
+---
+
+# DELIVERABLES (you must produce ALL of these)
+
+1. **Styleguide** — color palette, typography scale, buttons, inputs, tags,
+   table, modal, toast, dropdown.
+2. **All screens** at 1440px desktop:
+   - Section A: A1–A7 (7 screens)
+   - Section B: B1–B3 (3 screens)
+   - Section C: C1–C6 (6 screens)
+   - Section D: D1–D4 (4 screens)
+   - Section E: E1–E3 (3 screens)
+   - **Total: at least 23 screens.**
+3. **Key mobile screens** (390px): landing, login, register, dashboard
+   overview, contract list, sidebar drawer.
+4. **Flows** as connected frames with arrows.
+5. Brief design rationale per core screen.
+
+> **REMINDER: Design ALL 5 sections (A–E) and ALL 23+ screens. Do not stop
+> after any single section. This is a complete product — the user must see
+> every page listed above.**
