@@ -17,3 +17,5 @@ export * from "./login";
 export * from "./register";
 export * from "./upload";
 export * from "./invite";
+export * from "./forgot-password";
+export * from "./reset-password";

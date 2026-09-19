@@ -29,20 +29,33 @@ export const emailSchema = z
   .transform((v) => v.trim().toLowerCase());
 
 /* ----------------------------------------------------------------------------
- * Single-word identifiers (workspace / invite)
+ * Workspace & invite identifiers
  * ------------------------------------------------------------------------- */
 
+export const WORKSPACE_NAME_MIN = 8;
+export const WORKSPACE_NAME_MAX = 60;
+export const WORKSPACE_NAME_MIN_WORDS = 2;
+
 /**
- * Workspace name — chhota, human, display-only value (e.g. "Acme Legal").
- * Jaan boojh kar loose rakha hai: sirf required + length, koi character filter
- * nahi, taaki real-world company names (jo "&", "'", "," rakh sakte hain)
- * reject na hon.
+ * Workspace name — human display value (e.g. "Acme Legal").
+ * At least 2 words and 8 characters; no character filter so names with
+ * "&", "'", "," etc. are still allowed.
  */
 export const workspaceNameSchema = z
   .string({ error: "Workspace name is required" })
   .trim()
-  .min(2, "Workspace name must be at least 2 characters")
-  .max(60, "Workspace name must be at most 60 characters");
+  .min(
+    WORKSPACE_NAME_MIN,
+    `Workspace name must be at least ${WORKSPACE_NAME_MIN} characters`,
+  )
+  .max(
+    WORKSPACE_NAME_MAX,
+    `Workspace name must be at most ${WORKSPACE_NAME_MAX} characters`,
+  )
+  .refine(
+    (value) => value.split(/\s+/).filter(Boolean).length >= WORKSPACE_NAME_MIN_WORDS,
+    `Workspace name must be at least ${WORKSPACE_NAME_MIN_WORDS} words`,
+  );
 
 /**
  * Invite code — uppercase alphanumeric token (e.g. "XK7Q2A"). Copy-paste se

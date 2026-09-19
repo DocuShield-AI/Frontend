@@ -1,10 +1,4 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foregroundapse);
@@ -12,8 +6,8 @@
   --font-inter: var(--font-inter-variable);
   --font-plus-jakarta-sans: var(--font-plus-jakarta-sans-variable);
   --font-plus: var(--font-plus-jakarta-sans-variable);
-  --font-sans: var(--font-inter-variable);
-  --font-heading: var(--font-poppins-variableess);
+  --font-sans: var(--font-plus-jakarta-sans-variable);
+  --font-heading: var(--font-plus-jakarta-sans-variable);
 
   /* DocuShield palette — verbatim from style-guide.md tokens (#2) */
   --color-primary: #0C2B4E;
@@ -27,6 +21,17 @@
   --color-success: #2E7D32;
   --color-error: #C0392B;
   --color-warning: #B8860B;
+  --color-auth-cream: #F5F1EB;
+  --color-input: #EFEFEF;
+  --color-input-focus: #EAEAEA;
+  --color-auth-dark-base: #030810;
+  --color-auth-glow-accent: #d8e4ef;
+  --color-auth-glow-secondary: #e4eaf2;
+  --color-auth-panel-top: #fdfcfb;
+  --color-auth-panel-mid: #f4f7fb;
+  --color-auth-panel-bottom: #e4ebf3;
+
+  --border-width-3: 3px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,9 +41,176 @@
   }
 }
 
+html {
+  font-family: var(--font-plus-jakarta-sans-variable), "Plus Jakarta Sans", Arial,
+    Helvetica, sans-serif;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter-variable), Inter, Arial, Helvetica, sans-serif;
+  font-family: inherit;
+}
+
+@layer base {
+  input,
+  textarea,
+  select,
+  button {
+    font-family: inherit;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  a[href] {
+    cursor: pointer;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    font-family: inherit;
+  }
+}
+
+/* Auth pages */
+.auth-page-bg {
+  background: var(--color-auth-cream);
+}
+
+.auth-panel-dark {
+  position: relative;
+  background:
+    radial-gradient(
+      ellipse 55% 40% at 22% 92%,
+      color-mix(in srgb, var(--color-accent) 55%, transparent),
+      transparent 72%
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-auth-dark-base) 0%,
+      var(--color-primary) 42%,
+      var(--color-secondary) 100%
+    );
+}
+
+.auth-panel-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.45;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.45' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  mix-blend-mode: overlay;
+}
+
+@keyframes auth-float-up {
+  0%,
+  100% {
+    transform: translateY(10px);
+  }
+
+  50% {
+    transform: translateY(-16px);
+  }
+}
+
+@keyframes auth-float-down {
+  0%,
+  100% {
+    transform: translateY(-12px);
+  }
+
+  50% {
+    transform: translateY(14px);
+  }
+}
+
+.auth-float-up {
+  animation: auth-float-up 4.5s ease-in-out infinite;
+}
+
+.auth-float-down {
+  animation: auth-float-down 5s ease-in-out infinite;
+  animation-delay: -1.25s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-float-up,
+  .auth-float-down {
+    animation: none;
+  }
+}
+
+/* Auth panel — soft blush / light gradient behind inner cards */
+.auth-panel-light {
+  background:
+    radial-gradient(
+      ellipse 95% 75% at 70% 100%,
+      color-mix(in srgb, var(--color-accent) 20%, var(--color-auth-glow-accent)),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 70% 55% at 88% 95%,
+      color-mix(in srgb, var(--color-secondary) 12%, var(--color-auth-glow-secondary)),
+      transparent 60%
+    ),
+    linear-gradient(
+      to bottom,
+      var(--color-auth-panel-top) 0%,
+      var(--color-auth-panel-mid) 45%,
+      var(--color-auth-panel-bottom) 100%
+    );
+}
+
+/* Left panel — same gradient, horizontally flipped, anchored at bottom */
+.auth-panel-light-left {
+  background:
+    radial-gradient(
+      ellipse 95% 75% at 30% 100%,
+      color-mix(in srgb, var(--color-accent) 20%, var(--color-auth-glow-accent)),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 70% 55% at 12% 95%,
+      color-mix(in srgb, var(--color-secondary) 12%, var(--color-auth-glow-secondary)),
+      transparent 60%
+    ),
+    linear-gradient(
+      to bottom,
+      var(--color-auth-panel-top) 0%,
+      var(--color-auth-panel-mid) 45%,
+      var(--color-auth-panel-bottom) 100%
+    );
+}
+
+/* Forgot password — stacked top/bottom layout */
+.auth-recovery-shell {
+  animation: auth-recovery-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes auth-recovery-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-recovery-shell {
+    animation: none;
+  }
 }
 

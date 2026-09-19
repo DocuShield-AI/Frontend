@@ -52,9 +52,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${inter.variable} ${plusJakartaSans.variable} h-full antialiased`}
+      className={`${poppins.variable} ${inter.variable} ${plusJakartaSans.variable} font-plus h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="font-plus min-h-full flex flex-col">
         <SmoothScroll />
         {children}
         <Toaster
