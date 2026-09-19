@@ -8,6 +8,7 @@ This is the single source of truth for colors, typography, and component styling
 
 Source: [Color Hunt – #0C2B4E, #1A3D64, #1D546C, #F4F4F4](https://colorhunt.co/palette/0c2b4e1a3d641d546cf4f4f4)
 
+
 | Role | Hex | Usage |
 |---|---|---|
 | **Primary** | `#0C2B4E` (Deep Navy) | Main brand color. Navbars, headers, primary buttons, sidebar background, footer. |
