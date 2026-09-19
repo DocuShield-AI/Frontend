@@ -7,9 +7,26 @@
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-foreground: var(--foregroundapse);
+  --font-poppins: var(--font-poppins-variable);
+  --font-inter: var(--font-inter-variable);
+  --font-plus-jakarta-sans: var(--font-plus-jakarta-sans-variable);
+  --font-plus: var(--font-plus-jakarta-sans-variable);
+  --font-sans: var(--font-inter-variable);
+  --font-heading: var(--font-poppins-variableess);
+
+  /* DocuShield palette — verbatim from style-guide.md tokens (#2) */
+  --color-primary: #0C2B4E;
+  --color-secondary: #1A3D64;
+  --color-accent: #1D546C;
+  --color-surface: #FFFFFF;
+  --color-text-primary: #0C2B4E;
+  --color-text-secondary: #5A6B7B;
+  --color-text-on-dark: #F4F4F4;
+  --color-border: #D6DCE2;
+  --color-success: #2E7D32;
+  --color-error: #C0392B;
+  --color-warning: #B8860B;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +39,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter-variable), Inter, Arial, Helvetica, sans-serif;
 }

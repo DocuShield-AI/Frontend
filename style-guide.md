@@ -36,23 +36,27 @@ Source: [Color Hunt – #0C2B4E, #1A3D64, #1D546C, #F4F4F4](https://colorhunt.co
 
 ## 2. Typography
 
-**Use 2 fonts:**
+**Use 3 fonts:**
 
 | Font | Purpose |
 |---|---|
 | **Heading / Display font** | Titles, section headers, hero text, navbar brand — sets visual tone. |
 | **Body / UI font** | Paragraphs, labels, buttons, form fields, table data — optimized for readability at small sizes. |
+| **Plus Jakarta Sans** | Optional alternate UI/display font (per design-prompt) — interchangeable with Poppins/Inter where a distinct rounded geometric feel is wanted. |
 
 > Add a 3rd, monospace font only if the product displays code, IDs, logs, or tabular numeric data.
 
 **Final pairing:**
 - Heading: **Poppins** (Semibold/Bold) — geometric, confident, pairs well with a navy/teal palette
 - Body: **Inter** (Regular/Medium) — highly legible UI font, wide language/weight support
+- Alt: **Plus Jakarta Sans** (Regular/Semibold) — modern geometric sans, rounded terminals
 
-Both are free on Google Fonts:
+All are free on Google Fonts:
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 ```
+
+> In code these load automatically via `next/font/google` (self-hosted, no external requests). Use Tailwind classes `font-poppins`, `font-inter`, `font-plus-jakarta-sans`, or `font-heading` (Poppins).
 
 ### Type scale
 | Element | Size | Weight |
@@ -87,6 +91,7 @@ Both are free on Google Fonts:
   /* Typography */
   --font-heading: 'Poppins', sans-serif;
   --font-body: 'Inter', sans-serif;
+  --font-alt: 'Plus Jakarta Sans', sans-serif;
 
   /* Radius & spacing (baseline, adjust as needed) */
   --radius-sm: 4px;
@@ -102,7 +107,7 @@ Both are free on Google Fonts:
 
 When generating any UI (Claude Code, other agents), follow these rules:
 1. Always pull colors from the tokens above — never invent new hex values.
-2. Use `--font-heading` for all headings, `--font-body` for everything else.
+2. Use `--font-heading` for all headings, `--font-body` for everything else (`--font-alt` for Plus Jakarta Sans).
 3. Primary actions use the primary/accent color; destructive actions use `--color-error`.
 4. Maintain sufficient contrast: dark navy text on `#F4F4F4`/`#FFFFFF`, light `#F4F4F4` text on navy/teal surfaces.
 5. Keep border radius and spacing consistent with the tokens above unless a specific component spec overrides it.
