@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import AuthBrandingPanel from "@/components/auth/AuthBrandingPanel";
 import RegisterForm from "@/components/auth/RegisterForm";
 
@@ -9,7 +10,9 @@ export default function RegisterPage() {
         headline="Build Your Team. Triage Smarter."
         description="Create a workspace for your legal team or join an existing one with an invite code. Start uploading contracts and flagging risk from day one with your team."
       />
-      <RegisterForm />
+      <Suspense fallback={null}>
+        <RegisterForm />
+      </Suspense>
     </div>
   );
 }

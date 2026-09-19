@@ -1,6 +1,6 @@
 import { CheckCircle2 } from "lucide-react";
 
-const steps = [
+const defaultSteps = [
   { id: 1, label: "Verify email" },
   { id: 2, label: "Check inbox" },
   { id: 3, label: "New password" },
@@ -8,7 +8,17 @@ const steps = [
 
 export type RecoveryStep = 1 | 2 | 3;
 
-export default function RecoverySteps({ step }: { step: RecoveryStep }) {
+export default function RecoverySteps({
+  step,
+  labels,
+}: {
+  step: RecoveryStep;
+  labels?: [string, string, string];
+}) {
+  const steps = labels
+    ? labels.map((label, index) => ({ id: (index + 1) as RecoveryStep, label }))
+    : defaultSteps;
+
   return (
     <ol className="mt-6 flex w-full items-center justify-center gap-0">
       {steps.map((item, index) => {

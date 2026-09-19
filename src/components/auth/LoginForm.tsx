@@ -6,27 +6,30 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
+import { useLogin } from "@/hooks/use-login";
+import { googleAuthUrl } from "@/lib/api";
 import { loginSchema, type LoginValues } from "@/validations/auth/login";
 import AuthButtonLoader from "./AuthButtonLoader";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const login = useLogin();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = async (_data: LoginValues) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
+  const onSubmit = (data: LoginValues) => {
+    login.mutate(data);
   };
 
   const handleGoogleSignIn = () => {
-    window.location.href = "/api/auth/google";
+    window.location.href = googleAuthUrl();
   };
 
   return (
@@ -118,10 +121,10 @@ export default function LoginForm() {
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={login.isPending}
               className="mt-1 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary text-sm font-medium text-text-on-dark transition-all duration-300 hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-70"
             >
-              {isSubmitting ? (
+              {login.isPending ? (
                 <>
                   Logging in…
                   <AuthButtonLoader />

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import {
   useForm,
@@ -18,6 +19,8 @@ import {
   Mail,
 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
+import { useRegister } from "@/hooks/use-register";
+import { googleAuthUrl } from "@/lib/api";
 import AuthButtonLoader from "./AuthButtonLoader";
 import {
   registerCreateSchema,
@@ -68,18 +71,24 @@ function ModeTabs({
 
 function CreateWorkspaceForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const registerAccount = useRegister();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RegisterCreateValues>({
     resolver: zodResolver(registerCreateSchema),
     defaultValues: { workspaceName: "", email: "", password: "" },
   });
 
-  const onSubmit = async (_data: RegisterCreateValues) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
+  const onSubmit = (data: RegisterCreateValues) => {
+    registerAccount.mutate({
+      type: "create",
+      email: data.email,
+      password: data.password,
+      workspaceName: data.workspaceName,
+    });
   };
 
   return (
@@ -87,10 +96,10 @@ function CreateWorkspaceForm() {
       title="Create your workspace"
       subtitle="Set up DocuShield for your legal team"
       onSubmit={handleSubmit(onSubmit)}
-      isSubmitting={isSubmitting}
+      isSubmitting={registerAccount.isPending}
       submitLabel="Create account"
       submittingLabel="Creating account…"
-      googleHref="/api/auth/google"
+      googleHref={googleAuthUrl()}
     >
       <div className="space-y-1.5">
         <label
@@ -130,38 +139,40 @@ function CreateWorkspaceForm() {
   );
 }
 
-function JoinWorkspaceForm() {
+function JoinWorkspaceForm({ initialInviteCode = "" }: { initialInviteCode?: string }) {
   const [showPassword, setShowPassword] = useState(false);
+  const registerAccount = useRegister();
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RegisterJoinValues>({
     resolver: zodResolver(registerJoinSchema),
-    defaultValues: { inviteCode: "", email: "", password: "" },
+    defaultValues: { inviteCode: initialInviteCode, email: "", password: "" },
   });
 
   const inviteCode = watch("inviteCode");
 
-  const onSubmit = async (_data: RegisterJoinValues) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
+  const onSubmit = (data: RegisterJoinValues) => {
+    registerAccount.mutate({
+      type: "join",
+      email: data.email,
+      password: data.password,
+      inviteCode: data.inviteCode,
+    });
   };
-
-  const googleHref = inviteCode?.trim()
-    ? `/api/auth/google?inviteCode=${encodeURIComponent(inviteCode.trim().toUpperCase())}`
-    : "/api/auth/google";
 
   return (
     <RegisterFormShell
       title="Join a workspace"
       subtitle="Enter your invite code to join your team"
       onSubmit={handleSubmit(onSubmit)}
-      isSubmitting={isSubmitting}
+      isSubmitting={registerAccount.isPending}
       submitLabel="Join workspace"
       submittingLabel="Joining…"
-      googleHref={googleHref}
+      googleHref={googleAuthUrl(inviteCode)}
     >
       <div className="space-y-1.5">
         <label
@@ -380,7 +391,10 @@ function RegisterFormShell({
 }
 
 export default function RegisterForm() {
-  const [mode, setMode] = useState<RegisterMode>("create");
+  const searchParams = useSearchParams();
+  const inviteFromLink = searchParams.get("inviteCode")?.trim().toUpperCase() ?? "";
+  const modeFromLink = searchParams.get("mode") === "join" || inviteFromLink ? "join" : "create";
+  const [mode, setMode] = useState<RegisterMode>(modeFromLink);
 
   return (
     <section className="auth-panel-light font-plus flex min-h-[640px] flex-1 p-2">
@@ -390,7 +404,7 @@ export default function RegisterForm() {
           {mode === "create" ? (
             <CreateWorkspaceForm key="create" />
           ) : (
-            <JoinWorkspaceForm key="join" />
+            <JoinWorkspaceForm key={`join-${inviteFromLink}`} initialInviteCode={inviteFromLink} />
           )}
         </div>
       </div>

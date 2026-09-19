@@ -3,6 +3,7 @@ import { Poppins, Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 import SmoothScroll from "@/components/common/SmoothScroll";
+import QueryProvider from "@/providers/query-provider";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -55,8 +56,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${poppins.variable} ${inter.variable} ${plusJakartaSans.variable} font-plus h-full antialiased`}
     >
       <body className="font-plus min-h-full flex flex-col">
-        <SmoothScroll />
-        {children}
+        <QueryProvider>
+          <SmoothScroll />
+          {children}
+        </QueryProvider>
         <Toaster
           richColors
           position="bottom-right"

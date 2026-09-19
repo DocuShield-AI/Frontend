@@ -12,6 +12,7 @@ import {
   Mail,
   ShieldCheck,
 } from "lucide-react";
+import { useForgotPassword } from "@/hooks/use-forgot-password";
 import AuthButtonLoader from "./AuthButtonLoader";
 import AuthLogo from "./AuthLogo";
 import RecoverySteps from "./RecoverySteps";
@@ -26,20 +27,24 @@ const inputClassName =
 export default function ForgotPasswordForm() {
   const [sent, setSent] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState("");
+  const forgotPassword = useForgotPassword();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ForgotPasswordValues>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: { email: "" },
   });
 
-  const onSubmit = async (data: ForgotPasswordValues) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    setSubmittedEmail(data.email);
-    setSent(true);
+  const onSubmit = (data: ForgotPasswordValues) => {
+    forgotPassword.mutate(data, {
+      onSuccess: () => {
+        setSubmittedEmail(data.email);
+        setSent(true);
+      },
+    });
   };
 
   return (
@@ -161,10 +166,10 @@ export default function ForgotPasswordForm() {
 
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={forgotPassword.isPending}
                   className="group inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary text-sm font-medium text-text-on-dark transition-all duration-300 hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  {isSubmitting ? (
+                  {forgotPassword.isPending ? (
                     <>
                       Sending code…
                       <AuthButtonLoader />

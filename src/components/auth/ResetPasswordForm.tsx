@@ -14,6 +14,8 @@ import {
   Lock,
   ShieldCheck,
 } from "lucide-react";
+import { useResetPassword } from "@/hooks/use-reset-password";
+import { useVerifyResetCode } from "@/hooks/use-verify-reset-code";
 import AuthButtonLoader from "./AuthButtonLoader";
 import AuthLogo from "./AuthLogo";
 import RecoverySteps from "./RecoverySteps";
@@ -34,8 +36,9 @@ export default function ResetPasswordForm() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [codeVerified, setCodeVerified] = useState(false);
   const [verifyError, setVerifyError] = useState<string | null>(null);
-  const [isVerifying, setIsVerifying] = useState(false);
   const [done, setDone] = useState(false);
+  const verifyResetCode = useVerifyResetCode();
+  const resetPassword = useResetPassword();
 
   const {
     register,
@@ -43,7 +46,7 @@ export default function ResetPasswordForm() {
     handleSubmit,
     getValues,
     trigger,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: { code: "", password: "", confirmPassword: "" },
@@ -51,30 +54,37 @@ export default function ResetPasswordForm() {
 
   const verifyCode = async () => {
     setVerifyError(null);
-    const valid = await trigger("code");
-    if (!valid) return;
 
-    setIsVerifying(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    // Placeholder — backend will validate the code against the reset request.
-    const code = getValues("code");
-    const accepted = /^\d{8}$/.test(code);
-
-    setIsVerifying(false);
-
-    if (!accepted) {
-      setVerifyError("Invalid or expired code. Request a new one and try again.");
+    if (!emailFromLink) {
+      setVerifyError("Missing email. Start from forgot password.");
       return;
     }
 
-    setCodeVerified(true);
+    const valid = await trigger("code");
+    if (!valid) return;
+
+    verifyResetCode.mutate(
+      { email: emailFromLink, code: getValues("code") },
+      {
+        onSuccess: () => setCodeVerified(true),
+        onError: () => {
+          setVerifyError("Invalid or expired code. Request a new one and try again.");
+        },
+      },
+    );
   };
 
-  const onSubmit = async (_data: ResetPasswordValues) => {
-    if (!codeVerified) return;
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    setDone(true);
+  const onSubmit = (data: ResetPasswordValues) => {
+    if (!codeVerified || !emailFromLink) return;
+
+    resetPassword.mutate(
+      {
+        email: emailFromLink,
+        code: data.code,
+        password: data.password,
+      },
+      { onSuccess: () => setDone(true) },
+    );
   };
 
   return (
@@ -189,10 +199,10 @@ export default function ResetPasswordForm() {
                   <button
                     type="button"
                     onClick={verifyCode}
-                    disabled={isVerifying}
+                    disabled={verifyResetCode.isPending}
                     className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary text-sm font-medium text-text-on-dark transition-all duration-300 hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-70"
                   >
-                    {isVerifying ? (
+                    {verifyResetCode.isPending ? (
                       <>
                         Verifying code…
                         <AuthButtonLoader />
@@ -305,10 +315,10 @@ export default function ResetPasswordForm() {
 
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={resetPassword.isPending}
                     className="group inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary text-sm font-medium text-text-on-dark transition-all duration-300 hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-70"
                   >
-                    {isSubmitting ? (
+                    {resetPassword.isPending ? (
                       <>
                         Updating password…
                         <AuthButtonLoader />

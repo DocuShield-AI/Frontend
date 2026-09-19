@@ -21,7 +21,6 @@ export default function AuthLogo({
     />
   );
 
-  
   if (!href) {
     return <span className="inline-flex">{logo}</span>;
   }
