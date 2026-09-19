@@ -87,6 +87,7 @@ export default function ResetPasswordForm() {
     );
   };
 
+  
   return (
     <div className="auth-recovery-shell font-plus w-full max-w-[820px] overflow-hidden rounded-lg border-3 border-white bg-white">
       <div className="auth-recovery-hero auth-panel-dark relative w-full">
