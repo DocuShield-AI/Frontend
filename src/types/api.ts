@@ -67,3 +67,61 @@ export type VerifySignupBody = {
 export type ResendSignupCodeBody = {
   email: string;
 };
+
+export type ContractStatus =
+  | "queued"
+  | "extracting"
+  | "embedding"
+  | "classifying"
+  | "ready"
+  | "failed";
+
+export type RiskLevel = "low" | "medium" | "high";
+
+export type Contract = {
+  id: string;
+  name: string;
+  status: ContractStatus;
+  uploadedAt: string;
+  uploadedBy?: string;
+  size?: number;
+  riskCount?: number;
+};
+
+export type ClauseRisk = {
+  id: string;
+  title: string;
+  excerpt: string;
+  level: RiskLevel;
+  confidence?: number;
+  needsHumanReview?: boolean;
+};
+
+export type ContractDetail = Contract & {
+  clauses?: ClauseRisk[];
+};
+
+export type WorkspaceStats = {
+  contractsThisMonth: number;
+  collaborators: number;
+  completedReviews: number;
+  reviewActivity: number;
+  readyRate: number;
+  processedClauses: number;
+  riskCoverage: number;
+};
+
+export type WorkspaceMember = {
+  id: string;
+  name?: string;
+  email: string;
+  role: UserRole;
+  joinedAt?: string;
+};
+
+export type BillingInfo = {
+  plan: string;
+  status: string;
+  price?: string;
+  renewalDate?: string;
+};
