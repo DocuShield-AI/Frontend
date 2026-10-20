@@ -4,13 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Clock3,
-  Mail,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock3, Mail, ShieldCheck } from "lucide-react";
 import { useResendSignupCode } from "@/hooks/use-resend-signup-code";
 import { useVerifySignup } from "@/hooks/use-verify-signup";
 import AuthButtonLoader from "./AuthButtonLoader";
@@ -173,7 +167,10 @@ export default function VerifyEmailForm() {
                   </p>
                 </div>
                 <div className="rounded-lg bg-input/60 px-3 py-3 text-center">
-                  <Clock3 className="mx-auto h-4 w-4 text-accent" strokeWidth={2} />
+                  <Clock3
+                    className="mx-auto h-4 w-4 text-accent"
+                    strokeWidth={2}
+                  />
                   <p className="mt-1.5 text-[11px] font-medium text-text-primary">
                     15 min expiry
                   </p>

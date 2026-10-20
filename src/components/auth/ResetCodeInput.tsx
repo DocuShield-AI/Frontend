@@ -17,7 +17,10 @@ export default function ResetCodeInput({
   id = "reset-code",
 }: ResetCodeInputProps) {
   const refs = useRef<(HTMLInputElement | null)[]>([]);
-  const digits = Array.from({ length: RESET_CODE_LENGTH }, (_, i) => value[i] ?? "");
+  const digits = Array.from(
+    { length: RESET_CODE_LENGTH },
+    (_, i) => value[i] ?? "",
+  );
 
   const updateDigit = (index: number, digit: string) => {
     const next = digits.slice();

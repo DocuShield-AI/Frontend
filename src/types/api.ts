@@ -69,12 +69,7 @@ export type ResendSignupCodeBody = {
 };
 
 export type ContractStatus =
-  | "queued"
-  | "extracting"
-  | "embedding"
-  | "classifying"
-  | "ready"
-  | "failed";
+  "queued" | "extracting" | "embedding" | "classifying" | "ready" | "failed";
 
 export type RiskLevel = "low" | "medium" | "high";
 

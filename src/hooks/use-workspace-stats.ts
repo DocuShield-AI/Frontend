@@ -7,8 +7,11 @@ import { queryKeys } from "./query-keys";
 
 export function useWorkspaceStats(workspaceId?: string) {
   return useQuery({
-    queryKey: workspaceId ? queryKeys.workspaceStats(workspaceId) : ["workspace-stats", "none"],
-    queryFn: async () => (await api.get<WorkspaceStats>(`/workspaces/${workspaceId}/stats`)).data,
+    queryKey: workspaceId
+      ? queryKeys.workspaceStats(workspaceId)
+      : ["workspace-stats", "none"],
+    queryFn: async () =>
+      (await api.get<WorkspaceStats>(`/workspaces/${workspaceId}/stats`)).data,
     enabled: Boolean(workspaceId),
   });
 }

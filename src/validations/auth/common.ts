@@ -53,7 +53,8 @@ export const workspaceNameSchema = z
     `Workspace name must be at most ${WORKSPACE_NAME_MAX} characters`,
   )
   .refine(
-    (value) => value.split(/\s+/).filter(Boolean).length >= WORKSPACE_NAME_MIN_WORDS,
+    (value) =>
+      value.split(/\s+/).filter(Boolean).length >= WORKSPACE_NAME_MIN_WORDS,
     `Workspace name must be at least ${WORKSPACE_NAME_MIN_WORDS} words`,
   );
 

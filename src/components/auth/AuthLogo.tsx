@@ -26,7 +26,10 @@ export default function AuthLogo({
   }
 
   return (
-    <Link href={href} className="inline-flex transition-opacity hover:opacity-85">
+    <Link
+      href={href}
+      className="inline-flex transition-opacity hover:opacity-85"
+    >
       {logo}
     </Link>
   );

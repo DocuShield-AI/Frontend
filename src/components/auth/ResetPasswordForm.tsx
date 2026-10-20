@@ -68,7 +68,9 @@ export default function ResetPasswordForm() {
       {
         onSuccess: () => setCodeVerified(true),
         onError: () => {
-          setVerifyError("Invalid or expired code. Request a new one and try again.");
+          setVerifyError(
+            "Invalid or expired code. Request a new one and try again.",
+          );
         },
       },
     );
@@ -87,7 +89,6 @@ export default function ResetPasswordForm() {
     );
   };
 
-  
   return (
     <div className="auth-recovery-shell font-plus w-full max-w-[820px] overflow-hidden rounded-lg border-3 border-white bg-white">
       <div className="auth-recovery-hero auth-panel-dark relative w-full">
@@ -256,7 +257,9 @@ export default function ResetPasswordForm() {
                         type="button"
                         onClick={() => setShowPassword((prev) => !prev)}
                         className="absolute right-3.5 top-1/2 -translate-y-1/2 text-text-secondary/70 transition hover:text-text-primary"
-                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
                       >
                         {showPassword ? (
                           <EyeOff className="h-4 w-4" />
@@ -266,7 +269,9 @@ export default function ResetPasswordForm() {
                       </button>
                     </div>
                     {errors.password && (
-                      <p className="text-xs text-error">{errors.password.message}</p>
+                      <p className="text-xs text-error">
+                        {errors.password.message}
+                      </p>
                     )}
                   </div>
 

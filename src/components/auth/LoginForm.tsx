@@ -45,7 +45,11 @@ export default function LoginForm() {
             </p>
           </header>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-4"
+            noValidate
+          >
             <div className="space-y-1.5">
               <label
                 htmlFor="email"

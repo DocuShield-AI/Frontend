@@ -15,9 +15,7 @@ export function useRegister() {
       return data;
     },
     onSuccess: (data) => {
-      router.push(
-        `/verify-email?email=${encodeURIComponent(data.email)}`,
-      );
+      router.push(`/verify-email?email=${encodeURIComponent(data.email)}`);
     },
     onError: (error) => {
       toast.error(getApiErrorMessage(error, "Could not create account"));

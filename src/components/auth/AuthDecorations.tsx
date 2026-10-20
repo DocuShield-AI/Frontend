@@ -38,7 +38,14 @@ export function PieChartCard({ className = "" }: { className?: string }) {
   return (
     <GlassCard className={`auth-float-down w-[88px] ${className}`}>
       <svg viewBox="0 0 64 64" fill="none" className="mx-auto h-12 w-12">
-        <circle cx="32" cy="32" r="24" stroke="white" strokeWidth="4" opacity="0.25" />
+        <circle
+          cx="32"
+          cy="32"
+          r="24"
+          stroke="white"
+          strokeWidth="4"
+          opacity="0.25"
+        />
         <path
           d="M32 8 A24 24 0 0 1 52 44 L32 32 Z"
           fill="white"
@@ -69,12 +76,7 @@ export function TeamWorkspaceCard({ className = "" }: { className?: string }) {
           strokeWidth="2.5"
           opacity="0.85"
         />
-        <path
-          d="M14 52 H82"
-          stroke="white"
-          strokeWidth="2"
-          opacity="0.35"
-        />
+        <path d="M14 52 H82" stroke="white" strokeWidth="2" opacity="0.35" />
         <rect
           x="26"
           y="14"
@@ -119,7 +121,11 @@ export function TeamWorkspaceCard({ className = "" }: { className?: string }) {
 export function InviteTicketCard({ className = "" }: { className?: string }) {
   return (
     <GlassCard className={`auth-float-down w-[85px] ${className}`}>
-      <svg viewBox="0 0 88 88" fill="none" className="mx-auto h-[60px] w-[60px]">
+      <svg
+        viewBox="0 0 88 88"
+        fill="none"
+        className="mx-auto h-[60px] w-[60px]"
+      >
         <path
           d="M12 20 H76 C76 20 76 28 68 28 C76 28 76 36 76 36 V68 H12 V36 C12 36 12 28 20 28 C12 28 12 20 12 20 Z"
           stroke="white"
@@ -134,7 +140,14 @@ export function InviteTicketCard({ className = "" }: { className?: string }) {
           strokeDasharray="4 4"
           opacity="0.45"
         />
-        <circle cx="54" cy="42" r="10" stroke="white" strokeWidth="2.5" opacity="0.85" />
+        <circle
+          cx="54"
+          cy="42"
+          r="10"
+          stroke="white"
+          strokeWidth="2.5"
+          opacity="0.85"
+        />
         <circle cx="54" cy="42" r="4" fill="white" opacity="0.85" />
         <path
           d="M48 54 H60"
@@ -158,7 +171,11 @@ export function InviteTicketCard({ className = "" }: { className?: string }) {
 export function ResetKeyCard({ className = "" }: { className?: string }) {
   return (
     <GlassCard className={`auth-float-up w-[82px] ${className}`}>
-      <svg viewBox="0 0 88 88" fill="none" className="mx-auto h-[58px] w-[58px]">
+      <svg
+        viewBox="0 0 88 88"
+        fill="none"
+        className="mx-auto h-[58px] w-[58px]"
+      >
         <circle
           cx="28"
           cy="44"
@@ -167,7 +184,14 @@ export function ResetKeyCard({ className = "" }: { className?: string }) {
           strokeWidth="2.5"
           opacity="0.9"
         />
-        <circle cx="28" cy="44" r="6" stroke="white" strokeWidth="2.5" opacity="0.5" />
+        <circle
+          cx="28"
+          cy="44"
+          r="6"
+          stroke="white"
+          strokeWidth="2.5"
+          opacity="0.5"
+        />
         <path
           d="M42 44 H72"
           stroke="white"

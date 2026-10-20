@@ -25,7 +25,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title:"DocuShield — AI Co-Pilot for Legal Contract Risk Triage",
+  title: "DocuShield — AI Co-Pilot for Legal Contract Risk Triage",
   description:
     "DocuShield is your AI co-pilot for legal contract risk triage. Upload a contract and get fast, clause-level risk flags (low / medium / high) so legal teams can focus on what matters.",
   applicationName: "DocuShield",

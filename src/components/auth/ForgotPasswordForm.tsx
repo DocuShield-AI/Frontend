@@ -64,7 +64,9 @@ export default function ForgotPasswordForm() {
         <div className="relative z-10 px-8 pb-10 sm:px-10">
           <header className="mx-auto max-w-xl text-center">
             <h1 className="text-[1.65rem] font-bold leading-tight text-text-on-dark sm:text-[1.85rem]">
-              {sent ? "Almost there — check your inbox" : "Let\u2019s get you back in"}
+              {sent
+                ? "Almost there — check your inbox"
+                : "Let\u2019s get you back in"}
             </h1>
             <p className="mt-2 text-[13px] leading-relaxed text-text-on-dark/75 sm:text-sm">
               {sent
@@ -93,21 +95,27 @@ export default function ForgotPasswordForm() {
                     {submittedEmail}
                   </p>
                   <p className="mt-1.5 text-[12px] leading-relaxed text-text-secondary">
-                    The 8-digit code expires in 15 minutes. If you don&apos;t see it,
-                    check spam or promotions.
+                    The 8-digit code expires in 15 minutes. If you don&apos;t
+                    see it, check spam or promotions.
                   </p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-lg bg-input/60 px-3 py-3 text-center">
-                  <Lock className="mx-auto h-4 w-4 text-accent" strokeWidth={2} />
+                  <Lock
+                    className="mx-auto h-4 w-4 text-accent"
+                    strokeWidth={2}
+                  />
                   <p className="mt-1.5 text-[11px] font-medium text-text-primary">
                     Secure code
                   </p>
                 </div>
                 <div className="rounded-lg bg-input/60 px-3 py-3 text-center">
-                  <Clock3 className="mx-auto h-4 w-4 text-accent" strokeWidth={2} />
+                  <Clock3
+                    className="mx-auto h-4 w-4 text-accent"
+                    strokeWidth={2}
+                  />
                   <p className="mt-1.5 text-[11px] font-medium text-text-primary">
                     15 min expiry
                   </p>
@@ -184,7 +192,10 @@ export default function ForgotPasswordForm() {
               </form>
 
               <div className="mt-6 flex w-full items-center gap-3 rounded-lg border border-border/60 bg-auth-panel-top/80 px-4 py-3">
-                <ShieldCheck className="h-4 w-4 shrink-0 text-accent" strokeWidth={2} />
+                <ShieldCheck
+                  className="h-4 w-4 shrink-0 text-accent"
+                  strokeWidth={2}
+                />
                 <p className="text-[12px] leading-relaxed text-text-secondary">
                   For your security, reset links are single-use and tied to this
                   device session.

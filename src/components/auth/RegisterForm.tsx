@@ -10,14 +10,7 @@ import {
   type UseFormRegister,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Building2,
-  Eye,
-  EyeOff,
-  KeyRound,
-  Lock,
-  Mail,
-} from "lucide-react";
+import { Building2, Eye, EyeOff, KeyRound, Lock, Mail } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { useRegister } from "@/hooks/use-register";
 import { googleAuthUrl } from "@/lib/api";
@@ -139,7 +132,11 @@ function CreateWorkspaceForm() {
   );
 }
 
-function JoinWorkspaceForm({ initialInviteCode = "" }: { initialInviteCode?: string }) {
+function JoinWorkspaceForm({
+  initialInviteCode = "",
+}: {
+  initialInviteCode?: string;
+}) {
   const [showPassword, setShowPassword] = useState(false);
   const registerAccount = useRegister();
 
@@ -392,8 +389,10 @@ function RegisterFormShell({
 
 export default function RegisterForm() {
   const searchParams = useSearchParams();
-  const inviteFromLink = searchParams.get("inviteCode")?.trim().toUpperCase() ?? "";
-  const modeFromLink = searchParams.get("mode") === "join" || inviteFromLink ? "join" : "create";
+  const inviteFromLink =
+    searchParams.get("inviteCode")?.trim().toUpperCase() ?? "";
+  const modeFromLink =
+    searchParams.get("mode") === "join" || inviteFromLink ? "join" : "create";
   const [mode, setMode] = useState<RegisterMode>(modeFromLink);
 
   return (
@@ -404,7 +403,10 @@ export default function RegisterForm() {
           {mode === "create" ? (
             <CreateWorkspaceForm key="create" />
           ) : (
-            <JoinWorkspaceForm key={`join-${inviteFromLink}`} initialInviteCode={inviteFromLink} />
+            <JoinWorkspaceForm
+              key={`join-${inviteFromLink}`}
+              initialInviteCode={inviteFromLink}
+            />
           )}
         </div>
       </div>

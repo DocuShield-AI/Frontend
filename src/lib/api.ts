@@ -4,10 +4,19 @@ type RateLimitListener = () => void;
 let rateLimitUntil: number | null = null;
 const rateLimitListeners = new Set<RateLimitListener>();
 export const rateLimitState = {
-  getSeconds: () => Math.max(0, Math.ceil(((rateLimitUntil ?? 0) - Date.now()) / 1000)),
-  subscribe(listener: RateLimitListener) { rateLimitListeners.add(listener); return () => rateLimitListeners.delete(listener); },
+  getSeconds: () =>
+    Math.max(0, Math.ceil(((rateLimitUntil ?? 0) - Date.now()) / 1000)),
+  subscribe(listener: RateLimitListener) {
+    rateLimitListeners.add(listener);
+    return () => rateLimitListeners.delete(listener);
+  },
 };
-function setRateLimit(retryAfter: unknown) { const seconds = Number(retryAfter ?? 60); rateLimitUntil = Date.now() + (Number.isFinite(seconds) ? seconds : 60) * 1_000; rateLimitListeners.forEach((listener) => listener()); }
+function setRateLimit(retryAfter: unknown) {
+  const seconds = Number(retryAfter ?? 60);
+  rateLimitUntil =
+    Date.now() + (Number.isFinite(seconds) ? seconds : 60) * 1_000;
+  rateLimitListeners.forEach((listener) => listener());
+}
 
 export const API_URL =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
@@ -78,7 +87,8 @@ api.interceptors.response.use(
 
 export function getApiErrorMessage(error: unknown, fallback: string): string {
   if (axios.isAxiosError(error)) {
-    const data = error.response?.data as { message?: string | string[] } | undefined;
+    const data = error.response?.data as
+      { message?: string | string[] } | undefined;
     const message = data?.message;
     if (Array.isArray(message)) {
       return message[0] ?? fallback;

@@ -25,7 +25,10 @@ function RecoveryStepsSkeleton({ dark = false }: { dark?: boolean }) {
             <SkeletonBar dark={dark} className="hidden h-2.5 w-14 sm:block" />
           </div>
           {index < 2 && (
-            <SkeletonBar dark={dark} className="mx-2 h-px w-10 sm:mx-3 sm:w-14" />
+            <SkeletonBar
+              dark={dark}
+              className="mx-2 h-px w-10 sm:mx-3 sm:w-14"
+            />
           )}
         </div>
       ))}
