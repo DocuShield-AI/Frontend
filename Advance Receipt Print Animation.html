@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Advance Receipt Print Animation</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fdfdfd;--ink:#111;--muted:#8a8a8a;--blue:#1a73f5;--paper:#fafafa;--rtext:#222;--rmuted:#666;--line:#c9c9c9;--chip:#efefef;--red:#e0344a;--btn:#fff;--btnb:#e3e3e3;--warm:#fbf1e8;--warmb:#ead9c8;--navy:#1b3a8a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101114;--ink:#f3f3f3;--muted:#8d8f95;--btn:#1b1c21;--btnb:#2c2e35;--warm:#2a2420;--warmb:#4a3d33}}
+:root[data-theme="dark"]{--bg:#101114;--ink:#f3f3f3;--muted:#8d8f95;--btn:#1b1c21;--btnb:#2c2e35;--warm:#2a2420;--warmb:#4a3d33}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 12px;overflow-x:hidden}
+h1{font-family:'Outfit',system-ui,sans-serif;font-weight:400;font-size:clamp(26px,6.4vw,36px);line-height:1.25;text-align:center;margin:0 0 44px;letter-spacing:-.2px;min-height:2.5em}
+h1 span{color:var(--blue);display:block}
+.caret::after{content:"";display:inline-block;width:2px;height:.9em;background:currentColor;margin-left:2px;vertical-align:-.1em;animation:blink .7s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+.stage{width:min(400px,100%);display:flex;flex-direction:column;align-items:center}
+.printer{position:relative;z-index:3;width:100%;height:36px;border-radius:14px 14px 16px 16px;
+background:linear-gradient(#2a3347 0%,#10151f 45%,#0a0d15 100%);
+box-shadow:0 14px 28px -10px rgba(10,15,30,.45),inset 0 2px 3px rgba(255,255,255,.22),inset 0 -2px 3px rgba(0,0,0,.6)}
+.printer::after{content:"";position:absolute;left:5%;right:5%;bottom:7px;height:2px;border-radius:2px;background:rgba(255,255,255,.55);box-shadow:0 0 6px rgba(255,255,255,.25)}
+.printer.on{animation:buzz .12s linear infinite}
+@keyframes buzz{50%{transform:translateY(.6px)}}
+
+.slot{width:82.5%;height:0;overflow:hidden;position:relative;z-index:2;margin-top:-4px;transition:height .01s}
+.slot.open{height:560px;overflow:hidden;padding-bottom:30px}
+.receipt{position:relative;width:100%;background:var(--paper);color:var(--rtext);font-family:'JetBrains Mono',ui-monospace,monospace;padding:16px 20px 30px;
+box-shadow:0 18px 40px -14px rgba(0,0,0,.25);transform:translateY(-105%);
+-webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/12px 100% repeat-x,linear-gradient(#000,#000) top/100% calc(100% - 6px) no-repeat;
+mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/12px 100% repeat-x,linear-gradient(#000,#000) top/100% calc(100% - 6px) no-repeat}
+.receipt.print{animation:feed 2.9s cubic-bezier(.45,.05,.3,1) forwards}
+@keyframes feed{0%{transform:translateY(-105%)}18%{transform:translateY(-82%)}32%{transform:translateY(-70%)}55%{transform:translateY(-38%)}72%{transform:translateY(-24%)}100%{transform:translateY(0)}}
+.receipt.tear{animation:tear 1s cubic-bezier(.5,0,.8,.4) forwards;transform-origin:50% 100%}
+@keyframes tear{0%{transform:translateY(0) rotate(0)}25%{transform:translateY(8px) rotate(-2deg)}100%{transform:translateY(520px) rotate(9deg);opacity:0}}
+
+.head{display:flex;justify-content:space-between;align-items:flex-start}
+.brand{font-weight:700;font-size:12.5px;color:var(--navy);letter-spacing:.8px}
+.sub{font-size:10.5px;letter-spacing:.6px;margin-top:3px;color:var(--rtext)}
+.logo{width:34px;height:34px}
+.client{display:flex;justify-content:space-between;background:var(--chip);border-radius:4px;padding:6px 8px;font-size:10px;font-weight:500;margin:10px 0 8px;position:relative}
+.amt{font-size:27px;font-weight:700;letter-spacing:-.5px}
+.date{font-size:9.5px;color:var(--rmuted);margin:3px 0 10px;letter-spacing:.3px}
+.sep{border-top:1px dashed var(--line);margin:10px 0}
+.row{display:flex;justify-content:space-between;font-size:11.5px;line-height:1;padding:7px 0;gap:6px;white-space:nowrap}
+.row.s{font-size:11px;padding:5.5px 0;color:var(--rmuted)}
+.red{color:var(--red)}
+.total{display:flex;justify-content:space-between;font-weight:700;font-size:12.5px;border-top:1px solid var(--line);padding-top:12px;margin-top:8px}
+.thanks{text-align:center;font-size:9.5px;font-weight:500;letter-spacing:.3px;margin:18px 14px 14px;line-height:1.5}
+.bars{height:34px;display:flex;align-items:stretch;gap:0;justify-content:center}
+.bars i{display:block;background:#111}
+.txn{text-align:center;font-size:8.5px;color:var(--rmuted);margin-top:5px;letter-spacing:.8px}
+
+.stamp{position:absolute;right:10px;top:84px;z-index:4;font-family:'Plus Jakarta Sans',sans-serif;text-align:center;color:#d9283f;border:2.5px dashed #d9283f;border-radius:5px;padding:3px 9px 2px;
+transform:rotate(-14deg) scale(2.4);opacity:0;mix-blend-mode:multiply;pointer-events:none}
+.stamp b{display:block;font-size:19px;letter-spacing:2px;line-height:1.1;font-weight:700}
+.stamp small{font-size:7.5px;font-weight:600;letter-spacing:1px}
+.stamp.hit{animation:stamp .45s cubic-bezier(.2,.9,.3,1.2) forwards}
+@keyframes stamp{0%{opacity:0;transform:rotate(-14deg) scale(2.4)}60%{opacity:1;transform:rotate(-14deg) scale(.92)}100%{opacity:.92;transform:rotate(-14deg) scale(1)}}
+
+.status{text-align:center;margin-top:20px;transition:opacity .25s}
+.status h2{margin:0;font-size:24px;font-weight:700;letter-spacing:-.4px}
+.status p{margin:6px 0 0;font-size:13.5px;color:var(--muted);font-weight:500}
+.btns{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;justify-content:center}
+.btn{font:600 14px 'Plus Jakarta Sans',sans-serif;color:var(--ink);display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:12px;border:1px solid var(--btnb);background:var(--btn);cursor:pointer;transition:transform .15s,box-shadow .2s}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:scale(.96)}
+.btn svg{width:17px;height:17px;flex:none}
+.btn.main{background:linear-gradient(var(--warm),var(--warm));border-color:var(--warmb);box-shadow:0 8px 20px -8px rgba(190,130,80,.45)}
+.btn.dash{background:var(--warm);border:1px dashed var(--warmb);font-size:13px;opacity:.95}
+.btn.sm{height:42px;font-size:13px;padding:0 14px}
+.btn:disabled{cursor:default;transform:none}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<h1 id="title" aria-label="Advance Receipt Print Animation"><span id="t1" style="color:inherit;display:inline"></span><span id="t2"></span></h1>
+
+<div class="stage">
+  <div class="printer" id="printer"></div>
+  <div class="slot" id="slot">
+    <div class="receipt" id="receipt">
+      <div class="stamp" id="stamp"><b>PAID</b><small>30 AUG 2026</small></div>
+      <div class="head">
+        <div><div class="brand">BIZY MEDIA AGENCY</div><div class="sub">DIGITAL SERVICES RECEIPT</div></div>
+        <svg class="logo" viewBox="0 0 34 34" fill="none"><path d="M8 3h11a8 8 0 0 1 4 15 9 9 0 0 1-4 14H8z" fill="#2554d6"/><path d="M14 9h5a3 3 0 0 1 0 6h-5zM14 19h5a3.5 3.5 0 0 1 0 7h-5z" fill="#fafafa"/></svg>
+      </div>
+      <div class="client"><span>CLIENT: USMAN SHAMS</span><span>Visa •••• 4242</span></div>
+      <div class="amt">£2851.85</div>
+      <div class="date">10TH AUGUST 2026 | INVOICE PAID</div>
+      <div class="sep"></div>
+      <div class="row"><span>1X Web Development &amp; Design</span><span>£1499.00</span></div>
+      <div class="row"><span>1X SEO Optimization (Monthly)</span><span>£499.00</span></div>
+      <div class="row"><span>1X Digital Marketing &amp; Branding</span><span>£799.00</span></div>
+      <div class="sep"></div>
+      <div class="row s"><span>Subtotal</span><span>£2797.00</span></div>
+      <div class="row s"><span>Discount (Promo)</span><span class="red">-£100.00</span></div>
+      <div class="row s"><span>Gratuity (Tip)</span><span>+£20.00</span></div>
+      <div class="row s"><span>Tax (5%)</span><span>£134.85</span></div>
+      <div class="total"><span>GRAND TOTAL</span><span>£2851.85</span></div>
+      <div class="thanks">THANK YOU FOR PARTNERING WITH BIZY MEDIA!</div>
+      <div class="bars" id="bars"></div>
+      <div class="txn">TXN-7451188122-BM</div>
+    </div>
+  </div>
+
+  <div class="status">
+    <h2 id="h2">Receipt Cut &amp; Torn</h2>
+    <p id="sub">Ready to print a fresh copy anytime.</p>
+  </div>
+  <div class="btns">
+    <button class="btn main" id="print"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg><span id="plabel">Print receipt</span></button>
+    <button class="btn dash hide sm" id="tear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>Tear receipt</button>
+    <button class="btn sm" id="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg><span id="clabel">Copy</span></button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var printer=$('printer'),slot=$('slot'),rc=$('receipt'),stamp=$('stamp'),
+      pb=$('print'),tb=$('tear'),cb=$('copy'),h2=$('h2'),sub=$('sub'),plabel=$('plabel');
+  var busy=false,timers=[];
+
+  // barcode
+  var seed=7,bars=$('bars');
+  function rnd(){seed=(seed*9301+49297)%233280;return seed/233280}
+  for(var x=0;x<62;x++){var i=document.createElement('i');i.style.width=(1+Math.floor(rnd()*3))+'px';i.style.marginRight=(1+Math.floor(rnd()*2))+'px';bars.appendChild(i)}
+
+  function later(fn,ms){timers.push(setTimeout(fn,ms))}
+  function setText(a,b){h2.textContent=a;sub.textContent=b}
+
+  // typed title
+  function type(el,txt,cb2){var n=0;el.classList.add('caret');(function step(){el.textContent=txt.slice(0,++n);if(n<txt.length)setTimeout(step,55);else{el.classList.remove('caret');cb2&&cb2()}})()}
+  var t1=$('t1'),t2=$('t2');
+  type(t1,'Advance Receipt Print',function(){type(t2,'Animation',function(){})});
+
+  function print(){
+    if(busy)return;busy=true;
+    timers.forEach(clearTimeout);timers=[];
+    tb.classList.add('hide');
+    stamp.className='stamp';
+    rc.className='receipt';void rc.offsetWidth;
+    slot.classList.add('open');
+    plabel.textContent='Printing...';pb.disabled=true;
+    setText('Receipt Cut & Torn','Ready to print a fresh copy anytime.');
+    printer.classList.add('on');
+    rc.classList.add('print');
+    later(function(){stamp.classList.add('hit')},3300);
+    later(function(){
+      printer.classList.remove('on');
+      setText('Payment Successful',"You\u2019re all set\u2014now let the receipt roll!");
+      plabel.textContent='Re-print receipt';pb.disabled=false;
+      tb.classList.remove('hide');busy=false;
+    },3000);
+  }
+
+  function tear(){
+    if(busy)return;busy=true;
+    rc.classList.remove('print');rc.style.transform='translateY(0)';
+    rc.classList.add('tear');
+    later(function(){
+      slot.classList.remove('open');rc.className='receipt';rc.style.transform='';stamp.className='stamp';
+      tb.classList.add('hide');plabel.textContent='Print receipt';
+      setText('Receipt Cut & Torn','Ready to print a fresh copy anytime.');
+      busy=false;
+    },1000);
+  }
+
+  function copy(){
+    var txt='BIZY MEDIA AGENCY\nDIGITAL SERVICES RECEIPT\nCLIENT: USMAN SHAMS\nTotal: \u00a32851.85\nTXN-7451188122-BM';
+    var done=function(){$('clabel').textContent='Copied!';setTimeout(function(){$('clabel').textContent='Copy'},1400)};
+    try{navigator.clipboard.writeText(txt).then(done,done)}catch(e){done()}
+  }
+
+  pb.addEventListener('click',print);
+  tb.addEventListener('click',tear);
+  cb.addEventListener('click',copy);
+})();
+</script>
+</body>
+</html>

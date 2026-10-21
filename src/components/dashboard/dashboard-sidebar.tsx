@@ -30,7 +30,7 @@ const items: NavItem[] = [
     roles: ["admin", "legal"],
   },
   {
-    href: "/dashboard/contracts",
+    href: "/dashboard/upload",
     label: "Upload",
     icon: Upload,
     roles: ["admin", "legal"],
