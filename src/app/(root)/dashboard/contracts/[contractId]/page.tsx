@@ -50,7 +50,7 @@ export default function ContractDetailPage() {
           {steps.map((step, index) => (
             <div key={step}>
               <div
-                className={`h-2 rounded-full ${index <= stepIndex ? "bg-[#1D546C]" : "bg-[#D6DCE2]"}`}
+              className={`h-2 rounded-full ${index <= stepIndex ? "bg-[#1D546C]" : "bg-[#D6DCE2]"}`}
               />
               <p className="mt-2 text-center text-[10px] capitalize text-[#5A6B7B]">
                 {step}

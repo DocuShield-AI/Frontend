@@ -8,10 +8,11 @@ import {
   FileText,
   Grid2X2,
   LogOut,
-  Settings,
+  ShieldCheck,
   Upload,
   UsersRound,
 } from "lucide-react";
+import { useLogout } from "@/hooks/use-logout";
 import type { UserRole } from "@/types/api";
 
 type NavItem = {
@@ -51,46 +52,83 @@ const items: NavItem[] = [
 
 export function DashboardSidebar({ role }: { role?: UserRole }) {
   const pathname = usePathname();
+  const logout = useLogout();
+
+  const visibleItems = items.filter(
+    (item) => !item.roles || (role && item.roles.includes(role)),
+  );
+
+  // Which route is open right now (fallback to the first item so the
+  // pill always has a home). The pill is rendered IN PLACE, between the
+  // items above it and the items below it — never pinned to the top.
+  const activeIndex = Math.max(
+    visibleItems.findIndex(
+      (item) =>
+        pathname === item.href ||
+        (item.href !== "/dashboard" && pathname.startsWith(`${item.href}/`)),
+    ),
+    0,
+  );
+  const activeItem = visibleItems[activeIndex];
+  const ActiveIcon = activeItem?.icon;
+  const above = visibleItems.slice(0, activeIndex);
+  const below = visibleItems.slice(activeIndex + 1);
+
+  const renderLink = (item: NavItem) => {
+    const Icon = item.icon;
+    return (
+      <Link className="dashboard-rail__link" href={item.href} key={item.label}>
+        <Icon size={20} />
+        <span className="dashboard-rail__label">{item.label}</span>
+      </Link>
+    );
+  };
+
   return (
     <aside className="dashboard-rail">
-      <nav className="dashboard-rail__nav">
-        {items
-          .filter((item) => !item.roles || (role && item.roles.includes(role)))
-          .map((item) => {
-            const Icon = item.icon;
-            const active =
-              pathname === item.href ||
-              (item.href !== "/dashboard" &&
-                pathname.startsWith(`${item.href}/`));
-            return (
-              <Link
-                className={`dashboard-rail__link ${active ? "is-active" : ""}`}
-                href={item.href}
-                aria-label={item.label}
-                key={item.label}
-              >
-                <Icon size={20} />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-      </nav>
-      <div className="dashboard-rail__footer">
-        {role === "admin" && (
+      {/* Top block: brand + every item ABOVE the active one. Its bottom-right
+          corner carries the big inward curve that the pill flows out of. */}
+      <div className="dashboard-rail__top">
+        <div className="dashboard-rail__brand" aria-label="DocuShield">
+          <ShieldCheck size={30} />
+          <span>DocuShield</span>
+        </div>
+        {above.length > 0 && (
+          <nav className="dashboard-rail__nav">{above.map(renderLink)}</nav>
+        )}
+      </div>
+
+      {/* Channel: indigo strip holding the white pill for the active route. */}
+      <div className="dashboard-rail__channel">
+        {activeItem && ActiveIcon && (
           <Link
-            className="dashboard-rail__link"
-            href="/dashboard/settings/workspace"
-            aria-label="Settings"
+            className="dashboard-rail__link is-active"
+            href={activeItem.href}
+            aria-current="page"
           >
-            <Settings size={20} />
-            <span>Settings</span>
+            <ActiveIcon size={20} />
+            <span className="dashboard-rail__label">{activeItem.label}</span>
           </Link>
         )}
-        <button className="dashboard-rail__link" aria-label="Log out">
-          <LogOut size={20} />
-          <span>Log out</span>
-        </button>
-        <div className="dashboard-rail__avatar">DS</div>
+      </div>
+
+      {/* Body block: every item BELOW the active one + logout. Its top-right
+          corner mirrors the curve, closing the wave under the pill. */}
+      <div className="dashboard-rail__body">
+        {below.length > 0 && (
+          <nav className="dashboard-rail__nav">{below.map(renderLink)}</nav>
+        )}
+        <div className="dashboard-rail__footer">
+          <button
+            className="dashboard-rail__link"
+            type="button"
+            aria-label="Log out"
+            onClick={() => logout.mutate()}
+          >
+            <LogOut size={20} />
+            <span className="dashboard-rail__label">Log out</span>
+          </button>
+        </div>
       </div>
     </aside>
   );

@@ -1,39 +1,21 @@
 import type { Metadata } from "next";
-import { Outfit, Poppins, Inter, Plus_Jakarta_Sans, Space_Mono } from "next/font/google";
+import { Manrope, Space_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 import SmoothScroll from "@/components/common/SmoothScroll";
 import QueryProvider from "@/providers/query-provider";
 
-const poppins = Poppins({
+const manrope = Manrope({
   weight: ["400", "500", "600", "700"],
-  variable: "--font-poppins-variable",
+  variable: "--font-manrope-variable",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter-variable",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta-sans-variable",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  variable: "--font-outfit",
   display: "swap",
 });
 
 const spaceMono = Space_Mono({
   weight: ["400", "700"],
   subsets: ["latin"],
-  variable: "--font-space-mono",
+  variable: "--font-space-mono-variable",
   display: "swap",
 });
 
@@ -66,9 +48,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${inter.variable} ${plusJakartaSans.variable} ${outfit.variable} ${spaceMono.variable} font-plus h-full antialiased`}
+      className={`${manrope.variable} ${spaceMono.variable} h-full antialiased`}
     >
-      <body className="font-plus min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col">
         <QueryProvider>
           <SmoothScroll />
           {children}

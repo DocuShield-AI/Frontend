@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Advance Receipt Print Animation</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#fdfdfd;--ink:#111;--muted:#8a8a8a;--blue:#1a73f5;--paper:#fafafa;--rtext:#222;--rmuted:#666;--line:#c9c9c9;--chip:#efefef;--red:#e0344a;--btn:#fff;--btnb:#e3e3e3;--warm:#fbf1e8;--warmb:#ead9c8;--navy:#1b3a8a;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -12,7 +12,7 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 :root[data-theme="dark"]{--bg:#101114;--ink:#f3f3f3;--muted:#8d8f95;--btn:#1b1c21;--btnb:#2c2e35;--warm:#2a2420;--warmb:#4a3d33}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 12px;overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 12px;overflow-x:hidden}
 h1{font-family:'Outfit',system-ui,sans-serif;font-weight:400;font-size:clamp(26px,6.4vw,36px);line-height:1.25;text-align:center;margin:0 0 44px;letter-spacing:-.2px;min-height:2.5em}
 h1 span{color:var(--blue);display:block}
 .caret::after{content:"";display:inline-block;width:2px;height:.9em;background:currentColor;margin-left:2px;vertical-align:-.1em;animation:blink .7s steps(1) infinite}
@@ -54,7 +54,7 @@ mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bot
 .bars i{display:block;background:#111}
 .txn{text-align:center;font-size:8.5px;color:var(--rmuted);margin-top:5px;letter-spacing:.8px}
 
-.stamp{position:absolute;right:10px;top:84px;z-index:4;font-family:'Plus Jakarta Sans',sans-serif;text-align:center;color:#d9283f;border:2.5px dashed #d9283f;border-radius:5px;padding:3px 9px 2px;
+.stamp{position:absolute;right:10px;top:84px;z-index:4;font-family:'Manrope',sans-serif;text-align:center;color:#d9283f;border:2.5px dashed #d9283f;border-radius:5px;padding:3px 9px 2px;
 transform:rotate(-14deg) scale(2.4);opacity:0;mix-blend-mode:multiply;pointer-events:none}
 .stamp b{display:block;font-size:19px;letter-spacing:2px;line-height:1.1;font-weight:700}
 .stamp small{font-size:7.5px;font-weight:600;letter-spacing:1px}
@@ -65,7 +65,7 @@ transform:rotate(-14deg) scale(2.4);opacity:0;mix-blend-mode:multiply;pointer-ev
 .status h2{margin:0;font-size:24px;font-weight:700;letter-spacing:-.4px}
 .status p{margin:6px 0 0;font-size:13.5px;color:var(--muted);font-weight:500}
 .btns{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;justify-content:center}
-.btn{font:600 14px 'Plus Jakarta Sans',sans-serif;color:var(--ink);display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:12px;border:1px solid var(--btnb);background:var(--btn);cursor:pointer;transition:transform .15s,box-shadow .2s}
+.btn{font:600 14px 'Manrope',sans-serif;color:var(--ink);display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:12px;border:1px solid var(--btnb);background:var(--btn);cursor:pointer;transition:transform .15s,box-shadow .2s}
 .btn:hover{transform:translateY(-1px)}
 .btn:active{transform:scale(.96)}
 .btn svg{width:17px;height:17px;flex:none}

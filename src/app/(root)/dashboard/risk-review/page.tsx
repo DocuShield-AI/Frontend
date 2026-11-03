@@ -27,7 +27,7 @@ export default function RiskReviewPage() {
       <div className="rounded-xl border border-[#D6DCE2] bg-white">
         {flagged.map((contract) => (
           <Link
-            className="flex items-center justify-between border-b border-[#D6DCE2] p-5 hover:bg-slate-50"
+            className="flex items-center justify-between border-b border-[#D6DCE2] p-5 hover:bg-[#F4F6F7]"
             href={`/dashboard/contracts/${contract.id}`}
             key={contract.id}
           >

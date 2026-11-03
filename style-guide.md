@@ -6,57 +6,51 @@ This is the single source of truth for colors, typography, and component styling
 
 ## 1. Color Palette
 
-Source: [Color Hunt – #0C2B4E, #1A3D64, #1D546C, #F4F4F4](https://colorhunt.co/palette/0c2b4e1a3d641d546cf4f4f4)
+Official Ultraleads brand palette — navy blue, mint green, and light blue:
 
-
-| Role | Hex | Usage |
+| Color Name | Hex | Usage |
 |---|---|---|
-| **Primary** | `#0C2B4E` (Deep Navy) | Main brand color. Navbars, headers, primary buttons, sidebar background, footer. |
-| **Secondary** | `#1A3D64` (Navy Blue) | Secondary surfaces. Cards, panel backgrounds, secondary buttons, hover state for primary elements. |
-| **Accent** | `#1D546C` (Teal Blue) | Highlights and interactive elements. Links, active states, icons, progress bars, focus rings, chips/tags. |
-| **Background** | `#F4F4F4` (Light Gray) | Page background (light mode), input field backgrounds, dividers. |
-| **Surface (White)** | `#FFFFFF` | Cards and content surfaces sitting on top of the light gray background. |
-| **Text Primary** | `#0C2B4E` | Headings and primary body text on light backgrounds. |
-| **Text Secondary** | `#5A6B7B` | Muted/secondary text, captions, placeholder text. |
-| **Text on Dark** | `#F4F4F4` | Body/label text on navy or teal backgrounds. |
-| **Border/Divider** | `#D6DCE2` | Input borders, table borders, dividers on light surfaces. |
-| **Success** | `#2E7D32` | Success states, confirmations. *(supplemental — not from source palette)* |
-| **Error** | `#C0392B` | Error states, destructive actions. *(supplemental — not from source palette)* |
-| **Warning** | `#B8860B` | Warning states. *(supplemental — not from source palette)* |
+| **Navy Blue** | `#1E3A5F` (Primary brand identity) | Primary buttons, primary cards (e.g. Total Sales), active navigation tabs, main headings, dark surfaces. |
+| **Mint Green** | `#35C1B6` (Primary accent) | Primary actions, bar charts, progress bars, speed gauge widgets, active elements, data visualization. |
+| **Light Blue** | `#3395CA` (Secondary accent) | Secondary actions, filter buttons (gradient transitions), location badges, subtle UI highlights, gradients. |
+| **Soft Gray** | `#EFF1F4` (Background) | App background layout, inactive cards, light containers, input fills, divider tint. |
+| **Soft Pink** | `#FFB3B3` (Highlight) | Small badge highlights on statistics charts (e.g. percentage increases), active-card chart highlights. |
+| **Dark Slate** | `#1F2937` (Typography) | Main text, primary numbers, values, headings on light surfaces. |
+| **Pure White** | `#FFFFFF` (Surface) | Main content surfaces, card backgrounds, panels, dialogs, text on dark surfaces. |
+| **Deep Light Blue** | `#1E7DB2` (Accent — accessible tint of Light Blue) | Small text on light surfaces (labels, eyebrows, links, info status pills), icons, focus rings. True `#3395CA` fails WCAG AA below 18px on white (≈3.1:1) — this tint keeps contrast ≥ 4.5:1. |
+| **Muted Slate** | `#5A6B7B` | Secondary/muted text, captions, placeholder text (slate-gray derived from Navy Blue). |
+| **Slate Border** | `#D8DEE4` | Input borders, table borders, card outlines, dividers on light surfaces. |
+| **Success** | `#2E7D32` | Success states, confirmations. *(supplemental semantic color)* |
+| **Error** | `#C0392B` | Error states, destructive actions. *(supplemental semantic color)* |
+| **Warning** | `#B8860B` | Warning states. *(supplemental semantic color)* |
+
+### Brand gradient
+Navy Blue → Light Blue, used selectively (featured stat card, checkout CTA, chart fills) — never on every surface:
+```css
+--gradient-brand: linear-gradient(135deg, #1e3a5f 0%, #3395ca 100%);
+```
 
 ### Buttons
-- **Primary button**: background `#0C2B4E`, text `#F4F4F4`, hover `#1A3D64`
-- **Secondary button**: background transparent, border `#1D546C`, text `#1D546C`, hover fill `#1D546C` / text `#F4F4F4`
-- **Disabled button**: background `#D6DCE2`, text `#8A94A0`
+- **Primary button**: background `#1E3A5F`, text `#FFFFFF`, hover `#1F2937`
+- **Secondary button**: background transparent, border `#1E7DB2`, text `#1E7DB2`, hover fill `#3395CA` / text `#FFFFFF`
+- **Disabled button**: background `#D8DEE4`, text `#7D8B99`
 
-### Dark mode (optional, if needed later)
-- Background: `#0C2B4E` → Surface: `#1A3D64` → Text: `#F4F4F4` → Accent stays `#1D546C`
+### Design rules
+- Prefer soft shadows and surface contrast over borders. Border the minimum; use `#D8DEE4` at low prominence when structure demands it.
+- Serif of the product: premium analytics SaaS — restrained color usage, generous whitespace, consistent radii, `#FFFFFF` used heavily so data breathes.
+- Gradients only where highlighted (featured card, primary CTA, chart elements) — navy→light blue, never rainbow; never overused.
+- Never place small Light Blue or Mint text on white/Soft Gray (insufficient contrast); use Deep Light Blue `#1E7DB2` for text instead. Mint `#35C1B6` is for fills, charts, bars and large numerals.
+- Shadows inherit Navy Blue: `rgba(30, 58, 95, n)`.
+- Semantic colors stay intuitive: green = success, amber = warning, red = error, Light Blue = informational.
+- Don't force every element into brand colors; pink `#FFB3B3` is reserved for small stat badge highlights only.
 
 ---
 
 ## 2. Typography
 
-**Use 3 fonts:**
+**Primary font: Manrope** (Regular 400 / Medium 500 / Semibold 600 / Bold 700) — modern geometric sans, sets the visual tone across headings and body. Loaded via `next/font/google` as `--font-manrope-variable`; exposed as Tailwind utilities `font-sans`, `font-heading`, and the legacy aliases `font-plus`, `font-poppins`, `font-inter`, `font-outfit`.
 
-| Font | Purpose |
-|---|---|
-| **Heading / Display font** | Titles, section headers, hero text, navbar brand — sets visual tone. |
-| **Body / UI font** | Paragraphs, labels, buttons, form fields, table data — optimized for readability at small sizes. |
-| **Plus Jakarta Sans** | Optional alternate UI/display font (per design-prompt) — interchangeable with Poppins/Inter where a distinct rounded geometric feel is wanted. |
-
-> Add a 3rd, monospace font only if the product displays code, IDs, logs, or tabular numeric data.
-
-**Final pairing:**
-- Heading: **Poppins** (Semibold/Bold) — geometric, confident, pairs well with a navy/teal palette
-- Body: **Inter** (Regular/Medium) — highly legible UI font, wide language/weight support
-- Alt: **Plus Jakarta Sans** (Regular/Semibold) — modern geometric sans, rounded terminals
-
-All are free on Google Fonts:
-```html
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-```
-
-> In code these load automatically via `next/font/google` (self-hosted, no external requests). Use Tailwind classes `font-poppins`, `font-inter`, `font-plus-jakarta-sans`, or `font-heading` (Poppins).
+> Monospace: **Space Mono** only where the product displays code, IDs, or card numbers (`--font-space-mono-variable`).
 
 ### Type scale
 | Element | Size | Weight |
@@ -74,24 +68,33 @@ All are free on Google Fonts:
 
 ```css
 :root {
-  /* Colors */
-  --color-primary: #0C2B4E;
-  --color-secondary: #1A3D64;
-  --color-accent: #1D546C;
-  --color-background: #F4F4F4;
+  /* Brand */
+  --color-primary: #1E3A5F;   /* Light Blue */
+  --color-secondary: #1F2937; /* Navy Blue */
+  --color-accent: #1E7DB2;    /* Deep Light Blue (accessible small-text accent) */
+  --gradient-brand: linear-gradient(135deg, #1E3A5F 0%, #3395CA 100%);
+
+  /* Surfaces & text */
   --color-surface: #FFFFFF;
-  --color-text-primary: #0C2B4E;
+  --color-background: #EFF1F4;  /* Soft Gray */
+  --color-text-primary: #1F2937;
   --color-text-secondary: #5A6B7B;
-  --color-text-on-dark: #F4F4F4;
-  --color-border: #D6DCE2;
+  --color-text-on-dark: #FFFFFF;
+
+  /* Structure & feedback */
+  --color-border: #D8DEE4;
   --color-success: #2E7D32;
   --color-error: #C0392B;
   --color-warning: #B8860B;
 
+  /* Form fills */
+  --color-input: #F3F2FE;
+  --color-input-focus: #EAE9FB;
+
   /* Typography */
-  --font-heading: 'Poppins', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --font-alt: 'Plus Jakarta Sans', sans-serif;
+  --font-heading: 'Manrope', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --font-space-mono-variable: 'Space Mono', monospace;
 
   /* Radius & spacing (baseline, adjust as needed) */
   --radius-sm: 4px;
@@ -106,10 +109,10 @@ All are free on Google Fonts:
 ## 4. Instructions for AI Coding Agents
 
 When generating any UI (Claude Code, other agents), follow these rules:
-1. Always pull colors from the tokens above — never invent new hex values.
-2. Use `--font-heading` for all headings, `--font-body` for everything else (`--font-alt` for Plus Jakarta Sans).
-3. Primary actions use the primary/accent color; destructive actions use `--color-error`.
-4. Maintain sufficient contrast: dark navy text on `#F4F4F4`/`#FFFFFF`, light `#F4F4F4` text on navy/teal surfaces.
+1. Always pull colors from the tokens above — never invent new hex values (semantic success/error/warning feedback excepted).
+2. Use `--font-heading` for all headings, Manrope for everything else.
+3. Primary actions use Mint Green (or the navy→light-blue gradient); destructive actions use `--color-error`; informational emphasis uses Deep Light Blue.
+4. Maintain sufficient contrast: Navy Blue text on `#EFF1F4`/`#FFFFFF`, Pure White text on Navy Blue/Light Blue surfaces. Use `--color-accent` (never `#3395CA` or `#35C1B6`) for small colored text on light surfaces.
 5. Keep border radius and spacing consistent with the tokens above unless a specific component spec overrides it.
 
 ---

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sidebar with continuous pill nav</title>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --indigo:#2f22a6;      /* sidebar color */
+  --frame:#fafafc;       /* color of the page/panel the pill merges into */
+  --ink:#2a2d3e;
+  --red:#e63a30;
+  --curve:52px;          /* size of the two big inner curves */
+  --pill-h:46px;         /* height of the white channel / pill */
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;gap:18px;padding:12px;background:var(--frame);
+  font-family:"Work Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+
+/* ---------- SIDEBAR ---------- */
+.side{width:142px;min-height:640px;display:flex;flex-direction:column;color:#fff;position:relative;z-index:3}
+
+/* top block: big curve on its bottom-right corner */
+.side-top{height:170px;flex:none;background:var(--indigo);border-radius:34px 34px var(--curve) 0;display:grid;place-items:center}
+.side-top svg{width:34px;height:34px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* channel: indigo strip on the left, white pill runs out past the sidebar edge */
+.chan{position:relative;height:var(--pill-h);flex:none;background:var(--indigo)}
+.chan a{
+  position:absolute;left:24px;right:-18px;top:0;bottom:0;   /* right:-18px = the gap between sidebar and content */
+  background:var(--frame);color:var(--ink);
+  border-radius:calc(var(--pill-h)/2) 0 0 calc(var(--pill-h)/2);
+  display:flex;align-items:center;gap:10px;padding-left:22px;
+  font-size:11px;font-weight:600;text-decoration:none}
+.chan a svg{color:var(--red)}
+
+/* bottom block: big curve on its top-right corner */
+.side-bot{flex:1;display:flex;flex-direction:column;background:var(--indigo);
+  border-radius:0 var(--curve) 34px 34px;padding:22px 0 28px}
+.nav{display:flex;flex-direction:column}
+.nav a{display:flex;align-items:center;gap:10px;height:45px;padding:0 20px 0 28px;
+  font-size:11px;font-weight:500;color:#fff;text-decoration:none;opacity:.92}
+.nav a:hover{opacity:1}
+.out{margin-top:auto;display:flex;align-items:center;gap:10px;padding:0 28px;font-size:11px}
+
+svg.i{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.content{flex:1;padding:20px;color:#9a9fb2;font-size:13px}  /* demo area, delete */
+</style>
+</head>
+<body>
+
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="speed" viewBox="0 0 24 24"><path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16l3-4"/></symbol>
+  <symbol id="home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v8.5a.5.5 0 0 1-.5.5H4.5a.5.5 0 0 1-.5-.5z"/><path d="M9.5 20v-5.5h5V20"/></symbol>
+  <symbol id="phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.4-2.9 7.6-7 9.5-4.1-1.9-7-5.1-7-9.5V6z"/></symbol>
+  <symbol id="stats" viewBox="0 0 24 24"><path d="M6 20v-7M12 20V5M18 20v-10"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c.6-3.6 3.4-5.4 7-5.4s6.4 1.8 7 5.4"/></symbol>
+  <symbol id="power" viewBox="0 0 24 24"><path d="M12 3v8"/><path d="M7 6.5a8 8 0 1 0 10 0"/></symbol>
+</svg>
+
+<aside class="side">
+  <div class="side-top">
+    <svg viewBox="0 0 34 34"><path d="M5 15L17 5l12 10v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><rect x="12" y="13" width="10" height="14" rx="2"/><path d="M15 24h4"/></svg>
+  </div>
+
+  <!-- the active item lives in the channel between the two blocks -->
+  <div class="chan">
+    <a href="#" aria-current="page"><svg class="i"><use href="#speed"/></svg>Dashboard</a>
+  </div>
+
+  <div class="side-bot">
+    <nav class="nav">
+      <a href="#"><svg class="i"><use href="#home"/></svg>Rooms</a>
+      <a href="#"><svg class="i"><use href="#phone"/></svg>Devices</a>
+      <a href="#"><svg class="i"><use href="#shield"/></svg>Security</a>
+      <a href="#"><svg class="i"><use href="#stats"/></svg>Statistics</a>
+      <a href="#"><svg class="i"><use href="#user"/></svg>Members</a>
+    </nav>
+    <div class="out"><svg class="i"><use href="#power"/></svg>Logout</div>
+  </div>
+</aside>
+
+<main class="content">Page content goes here.</main>
+</body>
+</html>

@@ -91,8 +91,8 @@ function VolumeChart() {
           y1="0"
           y2="1"
         >
-          <stop stopColor="#1D546C" stopOpacity=".18" />
-          <stop offset="1" stopColor="#1D546C" stopOpacity="0" />
+          <stop stopColor="#1E7DB2" stopOpacity=".18" />
+          <stop offset="1" stopColor="#1E7DB2" stopOpacity="0" />
         </linearGradient>
       </defs>
       <path
@@ -102,7 +102,7 @@ function VolumeChart() {
       <path
         d="M0 95C40 95 60 70 90 70C120 70 140 105 170 105C200 105 230 45 260 70C290 95 320 50 360 50C400 50 440 85 500 70"
         fill="none"
-        stroke="#1D546C"
+        stroke="#1E7DB2"
         strokeLinecap="round"
         strokeWidth="2.8"
       />

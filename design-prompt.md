@@ -41,14 +41,15 @@ only, one shared shell with role-gated nav).
 ## Design tokens (apply to every screen)
 
 **Colors:**
-- Brand: deep navy `#0B1424`–`#15243D` (sidebar, headings, landing hero).
-- Accent: emerald/teal green (main CTA, active nav, success).
-- Semantic: green = success, amber = warning, red = error, blue = in-progress,
-  violet = admin/special.
-- Neutrals: page background `#F7F8FA`, white surfaces, slate borders,
-  slate body text, navy headings.
+- Brand primary: Light Blue `#1E3A5F` (main CTA, active nav, brand accents); Navy Blue `#1F2937` for dark surfaces, headings and hover elevation.
+- Brand secondary: Midnight Blue `#191970` (secondary surfaces, navigation accents).
+- Accent: Light Blue `#3395CA` (links, selected states, info indicators); accessible small-text accent `#1E7DB2`.
+- Background: Soft Gray `#EFF1F4` with Pure White `#FFFFFF` surfaces.
+- Brand gradient (selective): `linear-gradient(135deg, #1E3A5F, #3395CA)`.
+- Semantic: green = success, amber = warning, red = error (never brand-washed).
+- Neutrals: slate-tinted borders `#D8DEE4`, muted slate body text `#5A6B7B`, Navy Blue headings.
 
-**Typography:** Jakarta Sans (primary), clear H1–H3 hierarchy, 15–16px body,
+**Typography:** Manrope (400/500/600/700, primary), clear H1–H3 hierarchy, 15–16px body,
 tiny uppercase section labels, tabular numbers for data.
 
 **Shape:** 8px radius cards/inputs, 12px radius modals, full-pill badges,

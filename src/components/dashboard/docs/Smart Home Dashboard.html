@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smart Home Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#e7e4f8; --frame:#fafafc; --card:#fff; --soft:#f3f3f8; --ink:#4a4f63; --ink2:#2a2d3e; --muted:#9a9fb2; --line:#ececf3;
+  --indigo:#2f22a6; --yellow:#f5a50f; --red:#e63a30; --lav:#a99bef;
+  --sh:6px 6px 16px rgba(120,120,170,.13),-4px -4px 12px rgba(255,255,255,.9);
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --page:#14122b; --frame:#1b1a36; --card:#222142; --soft:#2a2950; --ink:#c8cbe0; --ink2:#eceefb; --muted:#8286a6; --line:#2e2d52;
+  --sh:6px 6px 16px rgba(0,0,0,.3),-3px -3px 10px rgba(255,255,255,.03);} }
+:root[data-theme="dark"]{--page:#14122b;--frame:#1b1a36;--card:#222142;--soft:#2a2950;--ink:#c8cbe0;--ink2:#eceefb;--muted:#8286a6;--line:#2e2d52;
+  --sh:6px 6px 16px rgba(0,0,0,.3),-3px -3px 10px rgba(255,255,255,.03);}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);font-family:"Work Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);
+  min-height:100vh;display:grid;place-items:center;padding:24px;font-size:12px;
+  background-image:radial-gradient(circle,rgba(255,255,255,.7) 1.6px,transparent 2px);background-size:20px 20px;background-position:0 0}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+svg.i{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+.app{width:min(1120px,100%);background:var(--frame);border-radius:38px;padding:12px;display:grid;
+  grid-template-columns:142px minmax(0,1fr) 232px;gap:18px;box-shadow:0 22px 50px rgba(90,80,160,.22)}
+
+/* sidebar */
+.side{background:var(--indigo);border-radius:34px;color:#fff;display:flex;flex-direction:column;padding:0 0 28px;overflow:hidden;position:relative;min-height:640px}
+.brand{height:150px;display:grid;place-items:center;background:var(--indigo);position:relative;z-index:2}
+.brand svg{width:34px;height:34px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav{display:flex;flex-direction:column;gap:0;margin-top:0}
+.nav a{display:flex;align-items:center;gap:10px;height:45px;padding:0 20px;font-size:11px;color:#fff;text-decoration:none;font-weight:500;opacity:.92}
+.nav a.on{background:var(--frame);color:var(--ink2);margin:0 -2px 0 14px;border-radius:26px 0 0 26px;padding-left:16px;font-weight:600;height:40px;align-self:stretch;opacity:1}
+.nav a.on svg{color:var(--red)}
+.nav a:not(.on){padding-left:28px}
+.side .out{margin-top:auto;display:flex;align-items:center;gap:10px;padding:0 28px;font-size:11px}
+
+/* center */
+.main{display:grid;gap:14px;align-content:start;min-width:0;padding-top:4px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.search{flex:0 1 320px;display:flex;align-items:center;justify-content:space-between;background:var(--soft);border-radius:14px;height:36px;padding:0 14px;color:var(--muted)}
+.search input{border:0;background:none;outline:0;font:inherit;font-size:11px;color:var(--ink2);width:100%}
+.date{font-size:11px;color:var(--muted)}.date b{color:var(--ink2);font-weight:600}
+.card{background:var(--card);border-radius:24px;box-shadow:var(--sh);position:relative;min-width:0}
+.ttl{font-size:12px;font-weight:600;color:var(--ink2)}
+.dots{letter-spacing:1px;font-weight:700;color:var(--ink2);line-height:1}
+
+.rooms{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.room{padding:18px 16px;text-align:left;border-radius:26px;display:block;transition:background .3s,color .3s,transform .3s,box-shadow .3s}
+.room .hd{display:flex;justify-content:space-between;align-items:center}
+.room .bd{display:flex;align-items:center;gap:14px;margin-top:12px}
+.ring{width:54px;height:54px;position:relative;flex:none;display:grid;place-items:center}
+.ring svg.r{position:absolute;inset:0;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:4}
+.ring .t{stroke:var(--line)}.ring .p{stroke:var(--indigo);stroke-linecap:round;transition:stroke-dasharray .6s}
+.ring .core{width:38px;height:38px;border-radius:50%;background:var(--card);display:grid;place-items:center;color:var(--ink);box-shadow:var(--sh)}
+.val{font-size:21px;font-weight:600;color:var(--ink2);line-height:1}.val small{display:block;font-size:9px;color:var(--muted);font-weight:500;margin-top:3px}
+.room.on{background:var(--indigo);transform:translateY(-4px);box-shadow:0 14px 26px rgba(47,34,166,.4)}
+.room.on .ttl,.room.on .dots,.room.on .val{color:#fff}.room.on .val small{color:#cfc9f5}
+.room.on .ring .t{stroke:#fff}.room.on .ring .p{stroke:var(--red)}.room.on .ring .core{background:var(--indigo);color:#fff;box-shadow:none}
+
+.mid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:14px}
+.left2{display:grid;gap:14px}
+.mini{padding:20px 18px;display:flex;align-items:center;gap:16px;min-height:108px}
+.bub{width:70px;height:70px;border-radius:24px;background:var(--card);box-shadow:var(--sh);display:grid;place-items:center;flex:none;color:var(--ink)}
+.bub svg.i{width:26px;height:26px}
+.mini .big{font-size:29px;font-weight:500;color:var(--ink);margin-top:6px;white-space:nowrap}.mini .big sup,.mini .big small{font-size:14px}
+.mini .tx{flex:1;min-width:0}
+.ctl{width:38px;height:92px;border-radius:14px;background:var(--soft);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex:none;padding:6px 0}
+.ticks{display:flex;flex-direction:column;gap:3px;align-items:flex-end;width:18px;cursor:ns-resize}
+.ticks i{display:block;height:2px;background:#5a5f73;border-radius:2px;opacity:.85}
+.ctl button{color:var(--muted);width:100%;height:30px;display:grid;place-items:center}
+.ctl button:hover{color:var(--indigo)}
+.light{padding:18px 20px;display:flex;flex-direction:column}
+.light .hd{display:flex;justify-content:space-between}
+.gauge{position:relative;margin:4px auto 0;width:min(100%,290px);aspect-ratio:200/150;touch-action:none}
+.gauge svg{width:100%;height:100%;overflow:visible}
+.gauge .core{position:absolute;left:50%;top:44%;transform:translate(-50%,0);width:36%;aspect-ratio:1.1;border-radius:26px;background:var(--card);
+  box-shadow:var(--sh),0 8px 20px rgba(100,100,160,.18);display:grid;place-items:center;font-size:26px;font-weight:600;color:var(--ink)}
+.gauge .core small{font-size:13px;font-weight:500;margin-left:1px;color:var(--muted)}
+.gauge .lb{position:absolute;top:70%;font-size:11px;color:var(--ink2);font-weight:500}
+
+.spend{padding:20px 20px 14px}
+.spend .hd{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:16px;font-size:9.5px;color:var(--muted)}
+.leg i{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px}
+.sel{background:var(--soft);border-radius:8px;font:inherit;font-size:9.5px;color:var(--muted);padding:5px 8px;border:0;outline:0}
+.chart{display:grid;grid-template-columns:34px 1fr;margin-top:12px;height:176px}
+.ax{display:flex;flex-direction:column;justify-content:space-between;font-size:8.5px;color:var(--muted);padding-bottom:20px;text-align:left;height:100%}
+.plot{position:relative;display:flex;align-items:stretch;border-bottom:0;padding-bottom:20px}
+.plot::before{content:"";position:absolute;left:0;right:0;top:5px;bottom:20px;background:repeating-linear-gradient(to bottom,var(--line) 0 1px,transparent 1px calc(20% ));opacity:.9}
+.day{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;position:relative}
+.day .bars{display:flex;align-items:flex-end;gap:5px;height:calc(100% - 0px);width:100%;justify-content:center}
+.day .bars b{display:block;width:5px;border-radius:3px;height:0;transition:height .7s cubic-bezier(.3,.9,.3,1)}
+.day em{position:absolute;bottom:-20px;font-style:normal;font-size:9px;color:var(--muted)}
+
+/* right */
+.rt{display:grid;gap:14px;align-content:start;padding-top:4px;min-width:0}
+.prof{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;justify-items:center;padding:6px 14px 0}
+.prof button{color:var(--ink)}
+.avatar{width:72px;height:72px;border-radius:50%;background:#fff;box-shadow:var(--sh);padding:5px;display:grid;place-items:center}
+.avatar svg{width:100%;height:100%;border-radius:50%}
+.welcome{text-align:center;font-size:14px;font-weight:600;color:var(--ink2);margin:-2px 0 4px}
+.dev{padding:18px 16px 18px;background:var(--card)}
+.dev .hd{display:flex;justify-content:space-between;margin-bottom:12px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:14px 14px}
+.tile{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:9.5px;font-weight:500;color:var(--ink2)}
+.tile .sq{width:100%;aspect-ratio:1;border-radius:20px;position:relative;display:grid;place-items:center;color:#4a4f63;transition:filter .3s,opacity .3s}
+.tile .sq::after{content:"";position:absolute;right:11px;bottom:11px;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.8}
+.tile .sq svg.i{width:34px;height:34px;stroke-width:1.4}
+.tile.off .sq{filter:grayscale(1);opacity:.55}
+.c1 .sq{background:#fcdcdc}.c1 .sq::after{background:#f08a8a}
+.c2 .sq{background:#d9f8d9}.c2 .sq::after{background:#5ed16a}
+.c3 .sq{background:#fce5c8}.c3 .sq::after{background:#f5b45e}
+.c4 .sq{background:#d2f0fc}.c4 .sq::after{background:#5cc7f0}
+.ill{width:100%;height:auto;display:block;margin-top:4px}
+
+@media (max-width:1020px){
+  .app{grid-template-columns:130px minmax(0,1fr)}
+  .rt{grid-column:1/-1;grid-template-columns:1fr 1fr;gap:14px}
+  .rt .prof,.rt .welcome{grid-column:1/-1}.ill{display:none}
+}
+@media (max-width:760px){
+  body{padding:10px}
+  .app{grid-template-columns:1fr;border-radius:26px}
+  .side{min-height:0;flex-direction:row;align-items:center;border-radius:24px;padding:0 10px;overflow-x:auto}
+  .brand{height:60px;width:60px;flex:none}.nav{flex-direction:row}.nav a,.nav a.on,.nav a:not(.on){margin:0;padding:0 12px;border-radius:20px;height:36px}
+  .nav a.on{background:var(--frame)}.side .out{display:none}
+  .rooms,.mid,.rt{grid-template-columns:1fr}.rooms{grid-template-columns:1fr 1fr}
+  .bar{flex-direction:column;align-items:stretch}.search{flex:1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="speed" viewBox="0 0 24 24"><path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16l3-4"/></symbol>
+  <symbol id="home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v8.5a.5.5 0 0 1-.5.5H4.5a.5.5 0 0 1-.5-.5z"/><path d="M9.5 20v-5.5h5V20"/></symbol>
+  <symbol id="phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.4-2.9 7.6-7 9.5-4.1-1.9-7-5.1-7-9.5V6z"/></symbol>
+  <symbol id="stats" viewBox="0 0 24 24"><path d="M6 20v-7M12 20V5M18 20v-10"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c.6-3.6 3.4-5.4 7-5.4s6.4 1.8 7 5.4"/></symbol>
+  <symbol id="power" viewBox="0 0 24 24"><path d="M12 3v8"/><path d="M7 6.5a8 8 0 1 0 10 0"/></symbol>
+  <symbol id="sofa" viewBox="0 0 24 24"><path d="M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/><path d="M3 12a2 2 0 0 1 4 0v2h10v-2a2 2 0 0 1 4 0v5H3z"/><path d="M6 17v2M18 17v2"/></symbol>
+  <symbol id="bed" viewBox="0 0 24 24"><path d="M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="1.6"/></symbol>
+  <symbol id="shelf" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9.5h16M4 14.5h16M9 4v16"/></symbol>
+  <symbol id="kitchen" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16M8 8h.01M8 16h.01"/></symbol>
+  <symbol id="therm" viewBox="0 0 24 24"><path d="M10 14.5V5a2 2 0 0 1 4 0v9.5a4 4 0 1 1-4 0z"/><path d="M12 9v7"/></symbol>
+  <symbol id="drop" viewBox="0 0 24 24"><path d="M12 3.5C9 8 6.5 10.6 6.5 14a5.5 5.5 0 0 0 11 0c0-3.4-2.5-6-5.5-10.5z"/><path d="M10 15l4-4M10.2 11.2h.01M13.8 14.8h.01"/></symbol>
+  <symbol id="ac" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="7" rx="2"/><path d="M6 15c0 2 1 3 1 4M12 15v4M18 15c0 2-1 3-1 4M6 9h5"/></symbol>
+  <symbol id="router" viewBox="0 0 24 24"><circle cx="12" cy="11" r="1.8"/><path d="M12 13v7M8.5 7.5a5 5 0 0 0 0 7M15.5 7.5a5 5 0 0 1 0 7M6 5a8.5 8.5 0 0 0 0 12M18 5a8.5 8.5 0 0 1 0 12"/></symbol>
+  <symbol id="speaker" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="9" r="1.6"/><circle cx="12" cy="15" r="3"/></symbol>
+  <symbol id="lamp" viewBox="0 0 24 24"><path d="M12 2v6M6 15a6 6 0 0 1 12 0zM12 15v5M9.5 20h5"/></symbol>
+  <symbol id="chev-u" viewBox="0 0 24 24"><path d="M6 14l6-6 6 6"/></symbol>
+  <symbol id="chev-d" viewBox="0 0 24 24"><path d="M6 10l6 6 6-6"/></symbol>
+  <symbol id="chat" viewBox="0 0 24 24"><path d="M5 18l-1 3 4-2a8 8 0 1 0-3-1z"/></symbol>
+  <symbol id="bell" viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 1.5h-15zM10 21h4"/></symbol>
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></symbol>
+</svg>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand"><svg viewBox="0 0 34 34"><path d="M5 15L17 5l12 10v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><rect x="12" y="13" width="10" height="14" rx="2"/><path d="M15 24h4"/></svg></div>
+    <nav class="nav">
+      <a class="on" href="#"><svg class="i"><use href="#speed"/></svg>Dashboard</a>
+      <a href="#"><svg class="i"><use href="#home"/></svg>Rooms</a>
+      <a href="#"><svg class="i"><use href="#phone"/></svg>Devices</a>
+      <a href="#"><svg class="i"><use href="#shield"/></svg>Security</a>
+      <a href="#"><svg class="i"><use href="#stats"/></svg>Statistics</a>
+      <a href="#"><svg class="i"><use href="#user"/></svg>Members</a>
+    </nav>
+    <div class="out"><svg class="i"><use href="#power"/></svg>Logout</div>
+  </aside>
+
+  <main class="main">
+    <div class="bar">
+      <label class="search"><input placeholder="Search" aria-label="Search"><svg class="i"><use href="#search"/></svg></label>
+      <div class="date"><b>Monday,</b> 10 February 2020</div>
+    </div>
+
+    <section class="rooms" id="rooms" aria-label="Rooms"></section>
+
+    <section class="mid">
+      <div class="left2">
+        <div class="card mini">
+          <div class="bub"><svg class="i"><use href="#therm"/></svg></div>
+          <div class="tx"><div class="ttl">Indoor Temperature</div><div class="big">+<span id="tv">25</span><sup>°c</sup></div></div>
+          <div class="ctl"><div class="ticks" id="ticks" aria-label="Temperature" role="slider" tabindex="0"></div></div>
+        </div>
+        <div class="card mini">
+          <div class="bub"><svg class="i"><use href="#drop"/></svg></div>
+          <div class="tx"><div class="ttl">Humidity</div><div class="big"><span id="hv">30</span><small>%</small></div></div>
+          <div class="ctl"><button id="hu" aria-label="Increase humidity"><svg class="i"><use href="#chev-u"/></svg></button><button id="hd" aria-label="Decrease humidity"><svg class="i"><use href="#chev-d"/></svg></button></div>
+        </div>
+      </div>
+      <div class="card light">
+        <div class="hd"><span class="ttl">Light Intensity</span><span class="dots">•••</span></div>
+        <div class="gauge" id="gauge">
+          <svg viewBox="0 0 200 150" aria-hidden="true">
+            <path d="M24 122V70Q24 24 70 24H130Q176 24 176 70V122" fill="none" stroke="#cfd1de" stroke-width="7" stroke-dasharray="1 6.2" opacity=".7"/>
+            <path d="M40 122V92" stroke="#2f22a6" stroke-width="6" stroke-linecap="butt" fill="none"/>
+            <path d="M40 92V72Q40 42 70 42H88" stroke="#a99bef" stroke-width="6" fill="none"/>
+            <path d="M88 42H130" stroke="#fbd58a" stroke-width="6" fill="none"/>
+            <path d="M130 42Q160 42 160 72V92" stroke="#f5a50f" stroke-width="6" fill="none"/>
+            <path d="M160 92V122" stroke="#e63a30" stroke-width="6" fill="none"/>
+            <path id="track" d="M40 122V72Q40 42 70 42H130Q160 42 160 72V122" fill="none" stroke="none"/>
+            <circle id="knob" r="9" fill="#fff" stroke="#8d93a8" stroke-width="2.2" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));cursor:grab"/>
+          </svg>
+          <div class="core"><span><span id="lv">60</span><small>%</small></span></div>
+          <span class="lb" style="left:-2%">0</span><span class="lb" style="right:-4%">100</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card spend">
+      <div class="hd">
+        <span class="ttl">Spending</span>
+        <div class="leg"><span><i style="background:var(--indigo)"></i>Electricity</span><span><i style="background:var(--yellow)"></i>Water</span><span><i style="background:var(--red)"></i>Gas</span></div>
+        <select class="sel" id="range" aria-label="Range"><option value="0">Last Week</option><option value="1">This Week</option></select>
+      </div>
+      <div class="chart">
+        <div class="ax"><span>250$</span><span>200$</span><span>150$</span><span>100$</span><span>50$</span><span>0$</span></div>
+        <div class="plot" id="plot"></div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="rt">
+    <div class="prof">
+      <button aria-label="Messages"><svg class="i"><use href="#chat"/></svg></button>
+      <div class="avatar"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#fdeaea"/><path d="M14 34c0-16 10-22 22-22s22 6 22 22v22H14z" fill="#3a2418"/><path d="M12 72c2-12 12-16 24-16s22 4 24 16z" fill="#ef4a3e"/><rect x="31" y="46" width="10" height="12" rx="4" fill="#f2b39b"/><ellipse cx="36" cy="34" rx="13" ry="15" fill="#f6c2ab"/><path d="M22 30c2-9 8-12 15-12 8 0 13 5 13 14-4-5-9-7-14-7-5 0-10 1-14 5z" fill="#3a2418"/><circle cx="31" cy="35" r="1.4" fill="#3a2418"/><circle cx="41" cy="35" r="1.4" fill="#3a2418"/><path d="M32 42q4 3 8 0" stroke="#c0564a" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></div>
+      <button aria-label="Notifications"><svg class="i"><use href="#bell"/></svg></button>
+    </div>
+    <div class="welcome">Welcome Annie!</div>
+    <div class="card dev">
+      <div class="hd"><span class="ttl">My Devices</span><span class="dots">•••</span></div>
+      <div class="tiles" id="tiles">
+        <button class="tile c1"><span class="sq"><svg class="i"><use href="#ac"/></svg></span>AC</button>
+        <button class="tile c2"><span class="sq"><svg class="i"><use href="#router"/></svg></span>Router</button>
+        <button class="tile c3"><span class="sq"><svg class="i"><use href="#speaker"/></svg></span>Music System</button>
+        <button class="tile c4"><span class="sq"><svg class="i"><use href="#lamp"/></svg></span>Lamps</button>
+      </div>
+    </div>
+    <svg class="ill" viewBox="0 0 232 230" aria-hidden="true">
+      <rect x="54" y="8" width="34" height="28" fill="#fff" stroke="#f6a9a0" stroke-width="2"/><rect x="62" y="14" width="18" height="14" fill="#f6a9a0"/>
+      <rect x="104" y="30" width="62" height="34" fill="#fff" stroke="#f6a9a0" stroke-width="2"/><rect x="110" y="38" width="50" height="18" fill="#f6a9a0"/>
+      <path d="M28 160c-14-22-8-40 6-52 4 18 2 36-6 52zM36 170c6-22 22-34 38-36-6 16-18 30-38 36z" fill="#2e9e3d"/>
+      <path d="M30 170c0 20 4 40 4 46" stroke="#2e9e3d" stroke-width="3" fill="none"/>
+      <path d="M18 196h32l-4 32H22z" fill="#f4b2a8"/>
+      <path d="M66 150c6-26 40-26 46-4l8 56H72z" fill="#2f22a6"/><rect x="62" y="186" width="70" height="12" rx="6" fill="#2f22a6"/><rect x="76" y="198" width="3" height="30" fill="#2f22a6"/><rect x="120" y="198" width="3" height="30" fill="#2f22a6"/>
+      <path d="M92 146c14-14 40-24 66-12l30 16c6 4 6 12-2 12l-30-4-30 8z" fill="#bfe0f6"/>
+      <path d="M92 150c-8-14 0-26 12-30l18-18" stroke="#1f1b3a" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <circle cx="108" cy="116" r="12" fill="#f6c2ab"/><path d="M96 114c0-12 10-16 20-12 2 8-4 14-20 12z" fill="#1f1b3a"/>
+      <rect x="130" y="98" width="14" height="24" rx="2" fill="#3a3f55" transform="rotate(20 137 110)"/>
+      <rect x="174" y="170" width="38" height="8" rx="3" fill="#f4b2a8"/><rect x="178" y="178" width="4" height="40" fill="#f4b2a8"/><rect x="204" y="178" width="4" height="40" fill="#f4b2a8"/>
+      <path d="M200 164c-2-18 2-30 6-38" stroke="#f4b2a8" stroke-width="2" fill="none"/>
+    </svg>
+  </aside>
+</div>
+
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var NS="http://www.w3.org/2000/svg";
+
+  /* rooms */
+  var rooms=[["Living Room","sofa",174,25],["Bedroom","bed",196,66],["Study Room","shelf",289,80],["Kitchen","kitchen",201,72]];
+  var wrap=$("rooms"), C=2*Math.PI*21;
+  rooms.forEach(function(r,i){
+    var b=document.createElement("button");
+    b.className="card room"+(i===1?" on":""); b.type="button";
+    b.innerHTML='<div class="hd"><span class="ttl">'+r[0]+'</span><span class="dots">•••</span></div>'+
+      '<div class="bd"><span class="ring"><svg class="r" viewBox="0 0 54 54"><circle class="t" cx="27" cy="27" r="21"/><circle class="p" cx="27" cy="27" r="21" stroke-dasharray="'+(C*r[3]/100)+' '+C+'"/></svg>'+
+      '<span class="core"><svg class="i"><use href="#'+r[1]+'"/></svg></span></span><span class="val">'+r[2]+'<small>kWh</small></span></div>';
+    b.addEventListener("click",function(){ wrap.querySelectorAll(".room").forEach(function(x){x.classList.remove("on")}); b.classList.add("on"); });
+    wrap.appendChild(b);
+  });
+
+  /* temperature ticks (drag or arrow keys) */
+  var tk=$("ticks"), temp=25, widths=[6,10,14,18,14,18,14,10,14,18,14,10,6];
+  widths.forEach(function(w){ var i=document.createElement("i"); i.style.width=w+"px"; tk.appendChild(i); });
+  function setTemp(v){ temp=Math.max(16,Math.min(32,v)); $("tv").textContent=temp; tk.setAttribute("aria-valuenow",temp);
+    var n=tk.children.length; for(var i=0;i<n;i++) tk.children[i].style.opacity=(n-1-i)/(n-1)<=(temp-16)/16+.08?.95:.3; }
+  tk.addEventListener("keydown",function(e){ if(e.key==="ArrowUp")setTemp(temp+1); if(e.key==="ArrowDown")setTemp(temp-1); });
+  tk.addEventListener("wheel",function(e){ e.preventDefault(); setTemp(temp+(e.deltaY<0?1:-1)); },{passive:false});
+  tk.addEventListener("pointerdown",function(e){ var r=tk.getBoundingClientRect(); setTemp(Math.round(16+16*(1-(e.clientY-r.top)/r.height))); });
+  setTemp(25);
+
+  /* humidity */
+  var hum=30; function setHum(v){ hum=Math.max(0,Math.min(100,v)); $("hv").textContent=hum; }
+  $("hu").onclick=function(){setHum(hum+1)}; $("hd").onclick=function(){setHum(hum-1)};
+
+  /* light gauge: knob rides the path, drag to change */
+  var track=$("track"), knob=$("knob"), L=track.getTotalLength(), lv=60;
+  function setLight(v){ lv=Math.max(0,Math.min(100,Math.round(v))); var p=track.getPointAtLength(L*lv/100);
+    knob.setAttribute("cx",p.x); knob.setAttribute("cy",p.y); $("lv").textContent=lv; }
+  function drag(e){
+    var svg=knob.ownerSVGElement, pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY;
+    var q=pt.matrixTransform(svg.getScreenCTM().inverse()), best=0, bd=1e9;
+    for(var i=0;i<=100;i++){ var p=track.getPointAtLength(L*i/100), d=(p.x-q.x)*(p.x-q.x)+(p.y-q.y)*(p.y-q.y); if(d<bd){bd=d;best=i;} }
+    setLight(best);
+  }
+  knob.addEventListener("pointerdown",function(e){ knob.setPointerCapture(e.pointerId); knob.style.cursor="grabbing"; knob.onpointermove=drag; });
+  knob.addEventListener("pointerup",function(){ knob.onpointermove=null; knob.style.cursor="grab"; });
+  setLight(60);
+
+  /* spending chart */
+  var sets=[
+    [[105,125,60],[40,170,222],[135,120,47],[158,190,93],[152,125,242],[35,248,62],[117,78,37]],
+    [[90,140,75],[120,95,160],[60,180,40],[200,70,110],[85,150,190],[140,60,95],[70,210,55]]
+  ];
+  var days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"], cols=["var(--indigo)","var(--yellow)","var(--red)"], plot=$("plot");
+  days.forEach(function(d){
+    var el=document.createElement("div"); el.className="day";
+    el.innerHTML='<div class="bars"><b style="background:'+cols[0]+'"></b><b style="background:'+cols[1]+'"></b><b style="background:'+cols[2]+'"></b></div><em>'+d+'</em>';
+    plot.appendChild(el);
+  });
+  function draw(k){
+    var H=plot.clientHeight-20-5;
+    [].forEach.call(plot.querySelectorAll(".day"),function(el,i){
+      [].forEach.call(el.querySelectorAll("b"),function(b,j){ b.style.height=(sets[k][i][j]/250*H)+"px"; });
+    });
+  }
+  $("range").onchange=function(){ draw(+this.value); };
+  requestAnimationFrame(function(){ draw(0); }); window.addEventListener("resize",function(){ draw(+$("range").value); });
+
+  /* device tiles toggle */
+  [].forEach.call(document.querySelectorAll(".tile"),function(t){ t.onclick=function(){ t.classList.toggle("off"); }; });
+})();
+</script>
+</body>
+</html>

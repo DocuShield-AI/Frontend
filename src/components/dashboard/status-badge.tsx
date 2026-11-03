@@ -1,8 +1,8 @@
 import type { ContractStatus, RiskLevel } from "@/types/api";
 const statusClasses: Record<ContractStatus, string> = {
-  queued: "bg-slate-100 text-slate-600",
-  extracting: "bg-blue-50 text-blue-700",
-  embedding: "bg-violet-50 text-violet-700",
+  queued: "bg-[#eff2f5] text-[#5a6b7b]",
+  extracting: "bg-accent/10 text-accent",
+  embedding: "bg-primary/10 text-accent",
   classifying: "bg-amber-50 text-amber-700",
   ready: "bg-green-50 text-green-700",
   failed: "bg-red-50 text-red-700",
