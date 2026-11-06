@@ -64,7 +64,7 @@ function TemperatureCard() {
   };
 
   return (
-    <article className="card mini">
+    <article className="card mini tone-mint">
       <span className="bub">
         <I name="shd-therm" />
       </span>
@@ -128,7 +128,7 @@ function HumidityCard() {
     []
   );
   return (
-    <article className="card mini">
+    <article className="card mini tone-amber">
       <span className="bub">
         <I name="shd-drop" />
       </span>
@@ -225,7 +225,7 @@ function LightGaugeCard() {
   };
 
   return (
-    <article className="card light">
+    <article className="card light tone-sky">
       <header className="hd">
         <span className="ttl">Risk coverage</span>
         <span className="dots">•••</span>

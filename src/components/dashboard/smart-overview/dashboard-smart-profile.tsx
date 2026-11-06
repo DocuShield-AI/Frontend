@@ -63,22 +63,27 @@ export function DashboardSmartProfile({ name }: { name?: string }) {
 
   return (
     <>
-      <div className="prof">
-        <button type="button" aria-label="Messages">
-          <I name="shd-chat" />
-        </button>
-        <span className="avatar">
-          <AvatarArt />
-        </span>
-        <button type="button" aria-label="Notifications">
-          <I name="shd-bell" />
-        </button>
+      <div className="prof card tone-navy">
+        <div className="prof-identity">
+          <span className="avatar">
+            <AvatarArt />
+          </span>
+          <div className="welcome">
+            {name
+              ? `${name.charAt(0).toUpperCase()}${name.slice(1)}`
+              : "Workspace"}
+          </div>
+        </div>
+        <div className="prof-actions">
+          <button type="button" aria-label="Notifications">
+            <I name="shd-bell" />
+          </button>
+        </div>
       </div>
-      <div className="welcome">Welcome{name ? ` ${name.charAt(0).toUpperCase()}${name.slice(1)}` : " Zayyam"}!</div>
-      <div className="card dev">
+      <div className="card dev tone-violet">
         <div className="hd">
           <span className="ttl">Workspace tools</span>
-          <span className="dots">•••</span>
+          <span className="chip">4 live</span>
         </div>
         <div className="tiles">
           {DEVICES.map((device, index) => {
@@ -103,6 +108,13 @@ export function DashboardSmartProfile({ name }: { name?: string }) {
             );
           })}
         </div>
+      </div>
+      <div className="card tip tone-mint">
+        <span className="tip-label">Tip</span>
+        <p>
+          High-risk clauses escalate automatically to Slack once confidence clears
+          the review threshold.
+        </p>
       </div>
       <SideIllustration />
     </>

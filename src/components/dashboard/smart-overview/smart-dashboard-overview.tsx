@@ -35,23 +35,38 @@ export function SmartDashboardOverview() {
     document.title = "DocuShield — Dashboard";
   }, []);
 
+  const greetingName = firstName
+    ? `${firstName.charAt(0).toUpperCase()}${firstName.slice(1)}`
+    : undefined;
+
   return (
     <section className="smart-dash">
       <SmartIconDefs />
       <div className="app">
         <div className="main">
           <div className="bar">
-            <label className="search">
-              <input
-                placeholder="Search"
-                aria-label="Search"
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-              />
-              <I name="shd-search" />
-            </label>
-            <div className="date">
-              <b>{weekday},</b> {day} {month} {year}
+            <div className="intro">
+              <p className="eyebrow">Overview</p>
+              <h1>
+                {greetingName ? `Good to see you, ${greetingName}` : "Contract risk overview"}
+              </h1>
+              <p className="sub">
+                Track reviews, risk flags, and workspace activity in one place.
+              </p>
+            </div>
+            <div className="bar-tools">
+              <div className="date">
+                <b>{weekday},</b> {day} {month} {year}
+              </div>
+              <label className="search">
+                <I name="shd-search" />
+                <input
+                  placeholder="Search contracts, clauses, risks…"
+                  aria-label="Search"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                />
+              </label>
             </div>
           </div>
 

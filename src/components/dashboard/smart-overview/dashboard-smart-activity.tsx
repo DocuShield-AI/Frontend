@@ -39,7 +39,7 @@ export function DashboardSmartActivity() {
   }, [range]);
 
   return (
-    <section className="card spend">
+    <section className="card spend tone-indigo">
       <div className="hd">
         <span className="ttl">Contract review activity</span>
         <div className="leg">

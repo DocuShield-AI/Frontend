@@ -16,10 +16,10 @@ export function SmartIconDefs() {
         <symbol id="shd-stats" viewBox="0 0 24 24"><path d="M6 20v-7M12 20V5M18 20v-10" /></symbol>
         <symbol id="shd-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6" /><path d="M5 20c.6-3.6 3.4-5.4 7-5.4s6.4 1.8 7 5.4" /></symbol>
         <symbol id="shd-power" viewBox="0 0 24 24"><path d="M12 3v8" /><path d="M7 6.5a8 8 0 1 0 10 0" /></symbol>
-        <symbol id="shd-sofa" viewBox="0 0 24 24"><path d="M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3" /><path d="M3 12a2 2 0 0 1 4 0v2h10v-2a2 2 0 0 1 4 0v5H3z" /><path d="M6 17v2M18 17v2" /></symbol>
-        <symbol id="shd-bed" viewBox="0 0 24 24"><path d="M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5" /><circle cx="7" cy="11" r="1.6" /></symbol>
-        <symbol id="shd-shelf" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" /><path d="M4 9.5h16M4 14.5h16M9 4v16" /></symbol>
-        <symbol id="shd-kitchen" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" /><path d="M4 12h16M8 8h.01M8 16h.01" /></symbol>
+        <symbol id="shd-sofa" viewBox="0 0 24 24"><path d="M8 4h5l5 5v11a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" /><path d="M13 4v5h5M9 13h6M9 17h4" /></symbol>
+        <symbol id="shd-bed" viewBox="0 0 24 24"><path d="M9 12l2.2 2.2L16 9.4" /><circle cx="12" cy="12" r="8.2" /></symbol>
+        <symbol id="shd-shelf" viewBox="0 0 24 24"><path d="M6 4v16M6 4h9l3 3v13H6" /><path d="M15 4v3h3M9 11h6M9 15h4" /></symbol>
+        <symbol id="shd-kitchen" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2" /><path d="M6 20c.7-3.4 3.2-5 6-5s5.3 1.6 6 5" /></symbol>
         <symbol id="shd-therm" viewBox="0 0 24 24"><path d="M10 14.5V5a2 2 0 0 1 4 0v9.5a4 4 0 1 1-4 0z" /><path d="M12 9v7" /></symbol>
         <symbol id="shd-drop" viewBox="0 0 24 24"><path d="M12 3.5C9 8 6.5 10.6 6.5 14a5.5 5.5 0 0 0 11 0c0-3.4-2.5-6-5.5-10.5z" /><path d="M10 15l4-4M10.2 11.2h.01M13.8 14.8h.01" /></symbol>
         <symbol id="shd-ac" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="7" rx="2" /><path d="M6 15c0 2 1 3 1 4M12 15v4M18 15c0 2-1 3-1 4M6 9h5" /></symbol>
@@ -39,7 +39,12 @@ export function SmartIconDefs() {
 /** Renders one reference symbol through <use>, exactly like the source markup. */
 export function I({ name, children }: { name: string; children?: ReactNode }) {
   return (
-    <svg className="i" aria-hidden="true">
+    <svg
+      className="i"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
       <use href={`#${name}`} />
       {children}
     </svg>

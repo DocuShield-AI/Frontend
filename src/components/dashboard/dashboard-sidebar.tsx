@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   BarChart3,
   CreditCard,
+  FilePlus2,
   FileText,
   Grid2X2,
   LogOut,
@@ -12,8 +13,8 @@ import {
   Upload,
   UsersRound,
 } from "lucide-react";
-import { useLogout } from "@/hooks/use-logout";
 import type { UserRole } from "@/types/api";
+import { useLogout } from "@/hooks/use-logout";
 
 type NavItem = {
   href: string;
@@ -21,6 +22,7 @@ type NavItem = {
   icon: typeof Grid2X2;
   roles?: UserRole[];
 };
+
 const items: NavItem[] = [
   { href: "/dashboard", label: "Overview", icon: Grid2X2 },
   { href: "/dashboard/contracts", label: "Contracts", icon: FileText },
@@ -37,6 +39,12 @@ const items: NavItem[] = [
     roles: ["admin", "legal"],
   },
   {
+    href: "/dashboard/upload",
+    label: "New contract",
+    icon: FilePlus2,
+    roles: ["admin", "legal"],
+  },
+  {
     href: "/dashboard/settings/workspace",
     label: "Workspace",
     icon: UsersRound,
@@ -50,6 +58,16 @@ const items: NavItem[] = [
   },
 ];
 
+function isActivePath(pathname: string, href: string, label: string) {
+  if (label === "New contract") {
+    return false;
+  }
+  return (
+    pathname === href ||
+    (href !== "/dashboard" && pathname.startsWith(`${href}/`))
+  );
+}
+
 export function DashboardSidebar({ role }: { role?: UserRole }) {
   const pathname = usePathname();
   const logout = useLogout();
@@ -58,78 +76,45 @@ export function DashboardSidebar({ role }: { role?: UserRole }) {
     (item) => !item.roles || (role && item.roles.includes(role)),
   );
 
-  // Which route is open right now (fallback to the first item so the
-  // pill always has a home). The pill is rendered IN PLACE, between the
-  // items above it and the items below it — never pinned to the top.
-  const activeIndex = Math.max(
-    visibleItems.findIndex(
-      (item) =>
-        pathname === item.href ||
-        (item.href !== "/dashboard" && pathname.startsWith(`${item.href}/`)),
-    ),
-    0,
-  );
-  const activeItem = visibleItems[activeIndex];
-  const ActiveIcon = activeItem?.icon;
-  const above = visibleItems.slice(0, activeIndex);
-  const below = visibleItems.slice(activeIndex + 1);
-
-  const renderLink = (item: NavItem) => {
-    const Icon = item.icon;
-    return (
-      <Link className="dashboard-rail__link" href={item.href} key={item.label}>
-        <Icon size={20} />
-        <span className="dashboard-rail__label">{item.label}</span>
-      </Link>
-    );
-  };
-
   return (
     <aside className="dashboard-rail">
-      {/* Top block: brand + every item ABOVE the active one. Its bottom-right
-          corner carries the big inward curve that the pill flows out of. */}
-      <div className="dashboard-rail__top">
-        <div className="dashboard-rail__brand" aria-label="DocuShield">
-          <ShieldCheck size={30} />
-          <span>DocuShield</span>
-        </div>
-        {above.length > 0 && (
-          <nav className="dashboard-rail__nav">{above.map(renderLink)}</nav>
-        )}
+      <div className="dashboard-rail__brand" aria-label="DocuShield">
+        <span className="dashboard-rail__mark">
+          <ShieldCheck size={18} />
+        </span>
+        <strong>DocuShield</strong>
       </div>
 
-      {/* Channel: indigo strip holding the white pill for the active route. */}
-      <div className="dashboard-rail__channel">
-        {activeItem && ActiveIcon && (
-          <Link
-            className="dashboard-rail__link is-active"
-            href={activeItem.href}
-            aria-current="page"
-          >
-            <ActiveIcon size={20} />
-            <span className="dashboard-rail__label">{activeItem.label}</span>
-          </Link>
-        )}
-      </div>
+      <nav className="dashboard-rail__nav" aria-label="Dashboard">
+        {visibleItems.map((item) => {
+          const Icon = item.icon;
+          const active = isActivePath(pathname, item.href, item.label);
+          return (
+            <Link
+              className={`dashboard-rail__link${active ? " is-active" : ""}`}
+              href={item.href}
+              key={item.label}
+              aria-current={active ? "page" : undefined}
+              prefetch
+            >
+              <Icon size={18} strokeWidth={1.8} />
+              <span className="dashboard-rail__label">{item.label}</span>
+            </Link>
+          );
+        })}
 
-      {/* Body block: every item BELOW the active one + logout. Its top-right
-          corner mirrors the curve, closing the wave under the pill. */}
-      <div className="dashboard-rail__body">
-        {below.length > 0 && (
-          <nav className="dashboard-rail__nav">{below.map(renderLink)}</nav>
-        )}
-        <div className="dashboard-rail__footer">
-          <button
-            className="dashboard-rail__link"
-            type="button"
-            aria-label="Log out"
-            onClick={() => logout.mutate()}
-          >
-            <LogOut size={20} />
-            <span className="dashboard-rail__label">Log out</span>
-          </button>
-        </div>
-      </div>
+        <button
+          type="button"
+          className="dashboard-rail__link dashboard-rail__link--action"
+          onClick={() => logout.mutate()}
+          disabled={logout.isPending}
+        >
+          <LogOut size={18} strokeWidth={1.8} />
+          <span className="dashboard-rail__label">
+            {logout.isPending ? "Signing out…" : "Sign out"}
+          </span>
+        </button>
+      </nav>
     </aside>
   );
 }

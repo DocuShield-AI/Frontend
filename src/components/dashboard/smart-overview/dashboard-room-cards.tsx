@@ -5,10 +5,10 @@ import { I } from "./smart-icons";
 
 /* Product metrics retain the reference card interactions and visual rhythm. */
 const ROOMS = [
-  ["Active contracts", "shd-sofa", 174, 25],
-  ["Ready for review", "shd-bed", 48, 66],
-  ["Risk flags", "shd-shelf", 289, 80],
-  ["Team members", "shd-kitchen", 21, 72],
+  ["Active contracts", "shd-stats", 174, 25, "tone-mint"],
+  ["Ready for review", "shd-bed", 48, 66, "tone-blue"],
+  ["Risk flags", "shd-shield", 289, 80, "tone-rose"],
+  ["Team members", "shd-user", 21, 72, "tone-navy"],
 ] as const;
 
 export function DashboardRoomCards() {
@@ -17,19 +17,19 @@ export function DashboardRoomCards() {
 
   return (
     <section className="rooms" aria-label="Workspace metrics">
-      {ROOMS.map(([label, icon, value, progress], index) => (
+      {ROOMS.map(([label, icon, value, progress, tone], index) => (
         <button
           key={label}
           type="button"
-          className={`card room${active === index ? " on" : ""}`}
+          className={`card room ${tone}${active === index ? " on" : ""}`}
           onClick={() => setActive(index)}
         >
           <span className="hd">
             <span className="ttl">{label}</span>
-            <span className="dots">•••</span>
+            <span className="delta">{progress}%</span>
           </span>
           <span className="bd">
-            <span className="ring">
+            <span className="metric-ring">
               <svg className="r" viewBox="0 0 54 54">
                 <circle className="t" cx="27" cy="27" r="21" />
                 <circle
